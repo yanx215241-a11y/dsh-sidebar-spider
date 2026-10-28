@@ -11,8 +11,8 @@
     "app/orbit.js: verbatim body; reused as the optional \"orbit\" view",
     "app/motion.js: extracted cubicPoint() only (reference-track-bound functions dropped)"
   ],
-  "bytes": 95641,
-  "sha256": "4b804f05dd8695fa01e37e378fdc5c3bf3e0e30207af6a1bdea4426087be6c88",
+  "bytes": 95867,
+  "sha256": "0844d217f4ab1a13e1de3f9a26596892ae2ef3f5c56e7e5684046611dce8c09b",
   "exports": [
     "createSpiderView"
   ]

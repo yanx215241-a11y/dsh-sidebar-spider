@@ -15,7 +15,8 @@
   },
   "files": [
     "lib/index.js",
-    "lib/client.js"
+    "lib/client.js",
+    "lib/THIRD_PARTY_LICENSES.txt"
   ],
   "dsh": {
     "client": {
@@ -45,5 +46,8 @@
   "scripts": {
     "build": "node build.mjs",
     "verify": "node verify.mjs"
-  }
+  },
+  "contributors": [
+    "Kirito14IT (original Canvas 2D visualization, prompt-spider-ui)"
+  ]
 }

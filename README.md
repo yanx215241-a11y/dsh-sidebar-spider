@@ -165,13 +165,22 @@ cd ..\scene; node build\build-scene.mjs
 
 ---
 
-## 许可
+## 许可与致谢
 
-MIT，Copyright (c) 2026 yanx215241-a11y。完整文本见 [LICENSE](LICENSE)。
+本项目以 **MIT** 许可发布，版权归属分两部分（详见 [NOTICE.md](NOTICE.md)）：
 
-- 仓库内全部代码（插件骨架、事件折叠、紧凑蛛网与大屏组合层、Canvas 2D 渲染模块）均为本仓库代码，以 MIT 许可发布。
-- 仓库地址：<https://github.com/yanx215241-a11y/dsh-sidebar-spider>
-- 作者主页：<https://github.com/yanx215241-a11y>
+- **原始 Canvas 2D 可视化**：来自 [Kirito14IT/prompt-spider-ui](https://github.com/Kirito14IT/prompt-spider-ui)
+  （MIT，Copyright (c) 2026 Kirito14IT，commit `f6522df`）。其 `app/spider.js`、`app/probes.js`、
+  `app/live-layout.js`、`app/orbit.js`、`app/motion.js` 的绘制实现以最小子集 vendored 在
+  `vendor/canvas-engine/`（未修改），完整许可见 `vendor/canvas-engine/LICENSE` 与
+  `plugin/lib/THIRD_PARTY_LICENSES.txt`。
+- **DSH 插件与后续开发**：Copyright (c) 2026 yanx215241-a11y —— 插件骨架、事件折叠、紧凑/大屏组合层、
+  数据模型与交互，以及自动上滑、逐词触手框、流式标签、累计计数等后续优化与新增代码。
+
+根目录 [LICENSE](LICENSE) 同时保留两位作者的版权声明，符合 MIT 对保留原始版权声明的要求。
+
+仓库：<https://github.com/yanx215241-a11y/dsh-sidebar-spider> ·
+上游：<https://github.com/Kirito14IT/prompt-spider-ui>
 
 ---
 
@@ -210,4 +219,4 @@ path labels, and counters that keep accumulating per label arrival (real totals 
 
 Install: append one `- insert:` row to `%USERPROFILE%\.dsh\profiles\desktop\cordis.patch.yml` pointing at
 `plugin/lib/index.js` (or run `install.ps1`); DSH hot-reloads the plugin in seconds. Build with
-`node plugin/build.mjs`, self-test with `node plugin/verify.mjs`. MIT licensed.
+`node plugin/build.mjs`, self-test with `node plugin/verify.mjs`. MIT licensed. Original Canvas 2D visualization by Kirito14IT (prompt-spider-ui, MIT); DSH plugin and subsequent modifications by yanx215241-a11y. See NOTICE.md.
