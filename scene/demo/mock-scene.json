@@ -1,0 +1,967 @@
+{
+  "status": "live",
+  "sessionId": "research-2f8c1a",
+  "startedAt": 1793158800000,
+  "now": 1793158824600,
+  "metrics": {
+    "queries": 12,
+    "results": 96,
+    "sources": 18,
+    "fetches": 8,
+    "failures": 2,
+    "events": 41
+  },
+  "calls": [
+    {
+      "id": "call-01",
+      "tool": "web_search",
+      "label": "deepseek harness client plugin api",
+      "queries": [
+        "deepseek harness client plugin api"
+      ],
+      "url": "",
+      "status": "completed",
+      "startedAt": 1793158800000,
+      "endedAt": 1793158801180,
+      "resultCount": 9,
+      "httpStatus": -1,
+      "bytes": -1,
+      "excerpt": "",
+      "resultTitles": [
+        "deepseek-harness/README.md at main",
+        "DSH client plugin API reference",
+        "Harness plugin lifecycle — docs"
+      ]
+    },
+    {
+      "id": "call-02",
+      "tool": "web_search",
+      "label": "dsh webresearch event contract",
+      "queries": [
+        "dsh webresearch event contract"
+      ],
+      "url": "",
+      "status": "completed",
+      "startedAt": 1793158800700,
+      "endedAt": 1793158801900,
+      "resultCount": 7,
+      "httpStatus": -1,
+      "bytes": -1,
+      "excerpt": "",
+      "resultTitles": [
+        "webresearch event contract (schema)",
+        "DSH tool events: web_search / web_fetch",
+        "Streaming tool results in DSH"
+      ]
+    },
+    {
+      "id": "call-03",
+      "tool": "web_fetch",
+      "label": "https://github.com/deepseek-ai/deepseek-harness",
+      "queries": [],
+      "url": "https://github.com/deepseek-ai/deepseek-harness",
+      "status": "completed",
+      "startedAt": 1793158801600,
+      "endedAt": 1793158802840,
+      "resultCount": 0,
+      "httpStatus": 200,
+      "bytes": 118400,
+      "excerpt": "The harness exposes a typed plugin surface: client plugins register sidebar views over a transport that streams tool events. Each tool call carries a stable id, timestamps and a result payload; web tools emit search hits or fetched page text.",
+      "resultTitles": []
+    },
+    {
+      "id": "call-04",
+      "tool": "web_search",
+      "label": "npm @napi-rs canvas windows prebuilt",
+      "queries": [
+        "npm @napi-rs canvas windows prebuilt"
+      ],
+      "url": "",
+      "status": "completed",
+      "startedAt": 1793158802500,
+      "endedAt": 1793158803690,
+      "resultCount": 8,
+      "httpStatus": -1,
+      "bytes": -1,
+      "excerpt": "",
+      "resultTitles": [
+        "@napi-rs/canvas - npm package page",
+        "canvas 0.3.x prebuilt binaries for win32-x64",
+        "Skia bindings for Node.js"
+      ]
+    },
+    {
+      "id": "call-05",
+      "tool": "web_fetch",
+      "label": "https://www.npmjs.com/package/@napi-rs/canvas",
+      "queries": [],
+      "url": "https://www.npmjs.com/package/@napi-rs/canvas",
+      "status": "completed",
+      "startedAt": 1793158803100,
+      "endedAt": 1793158804380,
+      "resultCount": 0,
+      "httpStatus": 200,
+      "bytes": 84200,
+      "excerpt": "Prebuilt Skia bindings for Node.js. createCanvas(width, height) returns a Canvas with getContext(\"2d\"), toBuffer(\"image/png\") and toDataURL(); fonts are resolved from the host system or registered via GlobalFonts.registerFromPath.",
+      "resultTitles": []
+    },
+    {
+      "id": "call-06",
+      "tool": "web_search",
+      "label": "canvas 2d dashboard high dpr performance",
+      "queries": [
+        "canvas 2d dashboard high dpr performance"
+      ],
+      "url": "",
+      "status": "completed",
+      "startedAt": 1793158803900,
+      "endedAt": 1793158805100,
+      "resultCount": 12,
+      "httpStatus": -1,
+      "bytes": -1,
+      "excerpt": "",
+      "resultTitles": [
+        "High-DPI canvas rendering guide",
+        "Device pixel ratio and crisp text",
+        "60fps Canvas2D dashboard techniques"
+      ]
+    },
+    {
+      "id": "call-07",
+      "tool": "web_fetch",
+      "label": "https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API",
+      "queries": [],
+      "url": "https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API",
+      "status": "completed",
+      "startedAt": 1793158804700,
+      "endedAt": 1793158805960,
+      "resultCount": 0,
+      "httpStatus": 200,
+      "bytes": 62800,
+      "excerpt": "The Canvas API provides a means for drawing graphics via JavaScript and the HTML canvas element. Among other things, it can be used for animation, game graphics, data visualization, photo manipulation, and real-time video processing.",
+      "resultTitles": []
+    },
+    {
+      "id": "call-08",
+      "tool": "web_search",
+      "label": "chrome mv3 content script canvas snapshot",
+      "queries": [
+        "chrome mv3 content script canvas snapshot"
+      ],
+      "url": "",
+      "status": "completed",
+      "startedAt": 1793158805400,
+      "endedAt": 1793158806520,
+      "resultCount": 6,
+      "httpStatus": -1,
+      "bytes": -1,
+      "excerpt": "",
+      "resultTitles": [
+        "Canvas snapshot in extension content scripts",
+        "chrome.tabs.captureVisibleTab fallback",
+        "OffscreenCanvas in MV3 service workers"
+      ]
+    },
+    {
+      "id": "call-09",
+      "tool": "web_fetch",
+      "label": "https://github.com/Kirito14IT/prompt-spider-ui",
+      "queries": [],
+      "url": "https://github.com/Kirito14IT/prompt-spider-ui",
+      "status": "completed",
+      "startedAt": 1793158806300,
+      "endedAt": 1793158807180,
+      "resultCount": 0,
+      "httpStatus": 200,
+      "bytes": 41300,
+      "excerpt": "A deterministic, resolution-independent recreation of a reference terminal: numbered prompt statements, a wireframe spider, and a fan of strands that fork each word to code, model, or you.",
+      "resultTitles": []
+    },
+    {
+      "id": "call-10",
+      "tool": "web_search",
+      "label": "dsh plugin sidebar hot reload",
+      "queries": [
+        "dsh plugin sidebar hot reload"
+      ],
+      "url": "",
+      "status": "completed",
+      "startedAt": 1793158807000,
+      "endedAt": 1793158808220,
+      "resultCount": 10,
+      "httpStatus": -1,
+      "bytes": -1,
+      "excerpt": "",
+      "resultTitles": [
+        "DSH plugin hot-reload dev loop",
+        "Vite HMR for client plugins",
+        "Reloading sidebar without restarting DSH"
+      ]
+    },
+    {
+      "id": "call-11",
+      "tool": "web_search",
+      "label": "webgpu vs canvas 2d line rendering",
+      "queries": [
+        "webgpu vs canvas 2d line rendering"
+      ],
+      "url": "",
+      "status": "completed",
+      "startedAt": 1793158808800,
+      "endedAt": 1793158809960,
+      "resultCount": 5,
+      "httpStatus": -1,
+      "bytes": -1,
+      "excerpt": "",
+      "resultTitles": [
+        "WebGPU vs Canvas2D line drawing benchmarks",
+        "GPU line rendering performance",
+        "When Canvas2D is fast enough"
+      ]
+    },
+    {
+      "id": "call-12",
+      "tool": "web_fetch",
+      "label": "https://www.electronjs.org/docs/latest/api/web-contents",
+      "queries": [],
+      "url": "https://www.electronjs.org/docs/latest/api/web-contents",
+      "status": "completed",
+      "startedAt": 1793158809500,
+      "endedAt": 1793158810430,
+      "resultCount": 0,
+      "httpStatus": 200,
+      "bytes": 58100,
+      "excerpt": "webContents is an EventEmitter that renders and controls a web page. Use setWindowOpenHandler, capturePage() for snapshots and executeJavaScript to run code in the page context.",
+      "resultTitles": []
+    },
+    {
+      "id": "call-13",
+      "tool": "web_search",
+      "label": "resizeobserver devicepixelratio canvas crisp",
+      "queries": [
+        "resizeobserver devicepixelratio canvas crisp"
+      ],
+      "url": "",
+      "status": "completed",
+      "startedAt": 1793158810200,
+      "endedAt": 1793158811280,
+      "resultCount": 8,
+      "httpStatus": -1,
+      "bytes": -1,
+      "excerpt": "",
+      "resultTitles": [
+        "ResizeObserver + devicePixelRatio canvas setup",
+        "Crisp canvas on monitor DPI changes",
+        "Preventing blurry canvas on zoom"
+      ]
+    },
+    {
+      "id": "call-14",
+      "tool": "web_fetch",
+      "label": "https://raster.ink/blog/layered-canvas",
+      "queries": [],
+      "url": "https://raster.ink/blog/layered-canvas",
+      "status": "failed",
+      "startedAt": 1793158811000,
+      "endedAt": 1793158811690,
+      "resultCount": 0,
+      "httpStatus": 504,
+      "bytes": 0,
+      "excerpt": "Layered canvas architecture: split static chrome, animated strands and overlay text into three canvases so the expensive layer only repaints when data changes. Avoids full-surface redraws at 60fps.",
+      "resultTitles": []
+    },
+    {
+      "id": "call-15",
+      "tool": "web_search",
+      "label": "node canvas todataurl png buffer",
+      "queries": [
+        "node canvas todataurl png buffer"
+      ],
+      "url": "",
+      "status": "completed",
+      "startedAt": 1793158811900,
+      "endedAt": 1793158812940,
+      "resultCount": 4,
+      "httpStatus": -1,
+      "bytes": -1,
+      "excerpt": "",
+      "resultTitles": [
+        "node-canvas toDataURL returns base64 PNG",
+        "@napi-rs/canvas encodePNG API",
+        "Write PNG buffer from canvas in Node"
+      ]
+    },
+    {
+      "id": "call-16",
+      "tool": "web_fetch",
+      "label": "https://github.com/dsh-plugin/registry",
+      "queries": [],
+      "url": "https://github.com/dsh-plugin/registry",
+      "status": "failed",
+      "startedAt": 1793158812600,
+      "endedAt": 1793158813140,
+      "resultCount": 0,
+      "httpStatus": 404,
+      "bytes": 0,
+      "excerpt": "404: Not Found — the requested repository dsh-plugin/registry does not exist or is private.",
+      "resultTitles": []
+    },
+    {
+      "id": "call-17",
+      "tool": "web_search",
+      "label": "prompt spider ui github kirito14it",
+      "queries": [
+        "prompt spider ui github kirito14it"
+      ],
+      "url": "",
+      "status": "completed",
+      "startedAt": 1793158813100,
+      "endedAt": 1793158814260,
+      "resultCount": 11,
+      "httpStatus": -1,
+      "bytes": -1,
+      "excerpt": "",
+      "resultTitles": [
+        "prompt-spider-ui — every word, one fork",
+        "Kirito14IT/prompt-spider-ui README",
+        "Prompt spider dashboard screenshots"
+      ]
+    },
+    {
+      "id": "call-18",
+      "tool": "web_search",
+      "label": "dsh plugin manifest schema",
+      "queries": [
+        "dsh plugin manifest schema"
+      ],
+      "url": "",
+      "status": "completed",
+      "startedAt": 1793158815200,
+      "endedAt": 1793158816380,
+      "resultCount": 7,
+      "httpStatus": -1,
+      "bytes": -1,
+      "excerpt": "",
+      "resultTitles": [
+        "DSH plugin manifest reference",
+        "plugin.json schema and capabilities",
+        "Client plugin entry points"
+      ]
+    },
+    {
+      "id": "call-19",
+      "tool": "web_search",
+      "label": "electrobun webview dsh runtime",
+      "queries": [
+        "electrobun webview dsh runtime"
+      ],
+      "url": "",
+      "status": "completed",
+      "startedAt": 1793158816100,
+      "endedAt": 1793158817220,
+      "resultCount": 9,
+      "httpStatus": -1,
+      "bytes": -1,
+      "excerpt": "",
+      "resultTitles": [
+        "electrobun webview runtime notes",
+        "DSH runtime: embedded Chromium version",
+        "Webview performance for canvas apps"
+      ]
+    },
+    {
+      "id": "call-20",
+      "tool": "web_fetch",
+      "label": "https://inspect.dev/guides/debugging-electron-apps",
+      "queries": [],
+      "url": "https://inspect.dev/guides/debugging-electron-apps",
+      "status": "running",
+      "startedAt": 1793158820100,
+      "endedAt": -1,
+      "resultCount": 0,
+      "httpStatus": -1,
+      "bytes": -1,
+      "excerpt": "Connect devtools to an Electron app via the remote debugging port, inspect the renderer, and profile long frames. Canvas-heavy UIs benefit from the performance panel and layer borders overlay.",
+      "resultTitles": []
+    }
+  ],
+  "pages": [
+    {
+      "id": "page-01",
+      "url": "https://github.com/deepseek-ai/deepseek-harness",
+      "title": "deepseek-harness: agent runtime & plugin host",
+      "route": "code",
+      "status": "completed",
+      "detail": "extracted",
+      "excerpt": "Plugin surface, tool event transport and sidebar view registration.",
+      "firstAt": 1793158800400,
+      "updatedAt": 1793158800900
+    },
+    {
+      "id": "page-02",
+      "url": "https://www.npmjs.com/package/@napi-rs/canvas",
+      "title": "@napi-rs/canvas - npm",
+      "route": "code",
+      "status": "completed",
+      "detail": "extracted",
+      "excerpt": "Skia canvas for Node: createCanvas, getContext, toBuffer, toDataURL.",
+      "firstAt": 1793158800920,
+      "updatedAt": 1793158801750
+    },
+    {
+      "id": "page-03",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API",
+      "title": "Canvas API - MDN",
+      "route": "code",
+      "status": "completed",
+      "detail": "extracted",
+      "excerpt": "Canvas 2D drawing surface: state, paths, text, images and animation.",
+      "firstAt": 1793158801440,
+      "updatedAt": 1793158802600
+    },
+    {
+      "id": "page-04",
+      "url": "https://developer.chrome.com/docs/extensions/reference/api/tabs",
+      "title": "chrome.tabs - Chrome Developers",
+      "route": "model",
+      "status": "completed",
+      "detail": "extracted",
+      "excerpt": "",
+      "firstAt": 1793158801960,
+      "updatedAt": 1793158803450
+    },
+    {
+      "id": "page-05",
+      "url": "https://github.com/Kirito14IT/prompt-spider-ui",
+      "title": "prompt-spider-ui: every word, one fork",
+      "route": "code",
+      "status": "completed",
+      "detail": "extracted",
+      "excerpt": "Reference dashboard: prompt statements, spider, forked strands and route cards.",
+      "firstAt": 1793158802480,
+      "updatedAt": 1793158803340
+    },
+    {
+      "id": "page-06",
+      "url": "https://nodejs.org/api/fs.html",
+      "title": "File system | Node.js docs",
+      "route": "code",
+      "status": "completed",
+      "detail": "extracted",
+      "excerpt": "",
+      "firstAt": 1793158803000,
+      "updatedAt": 1793158804190
+    },
+    {
+      "id": "page-07",
+      "url": "https://www.electronjs.org/docs/latest/api/web-contents",
+      "title": "webContents | Electron",
+      "route": "model",
+      "status": "completed",
+      "detail": "extracted",
+      "excerpt": "Render and control a web page from the main process; capturePage() snapshots.",
+      "firstAt": 1793158803520,
+      "updatedAt": 1793158805040
+    },
+    {
+      "id": "page-08",
+      "url": "https://web.dev/articles/device-pixel-ratio",
+      "title": "Device pixel ratio - web.dev",
+      "route": "code",
+      "status": "completed",
+      "detail": "extracted",
+      "excerpt": "",
+      "firstAt": 1793158804040,
+      "updatedAt": 1793158805890
+    },
+    {
+      "id": "page-09",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver",
+      "title": "ResizeObserver - MDN",
+      "route": "model",
+      "status": "completed",
+      "detail": "extracted",
+      "excerpt": "Observe container box changes to resize the canvas backing store.",
+      "firstAt": 1793158804560,
+      "updatedAt": 1793158805780
+    },
+    {
+      "id": "page-10",
+      "url": "https://stackoverflow.com/questions/15661339/how-do-i-fix-blurry-text-in-my-html5-canvas",
+      "title": "How do I fix blurry text in my HTML5 canvas?",
+      "route": "model",
+      "status": "completed",
+      "detail": "extracted",
+      "excerpt": "Scale the canvas backing store by devicePixelRatio and CSS-size it down.",
+      "firstAt": 1793158805080,
+      "updatedAt": 1793158806630
+    },
+    {
+      "id": "page-11",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/API/Window/devicePixelRatio",
+      "title": "Window.devicePixelRatio - MDN",
+      "route": "code",
+      "status": "completed",
+      "detail": "extracted",
+      "excerpt": "",
+      "firstAt": 1793158805600,
+      "updatedAt": 1793158807480
+    },
+    {
+      "id": "page-12",
+      "url": "https://vitejs.dev/guide/features.html#hot-module-replacement",
+      "title": "HMR - Vite guide",
+      "route": "code",
+      "status": "completed",
+      "detail": "extracted",
+      "excerpt": "",
+      "firstAt": 1793158806120,
+      "updatedAt": 1793158808330
+    },
+    {
+      "id": "page-13",
+      "url": "https://github.com/Automattic/node-canvas",
+      "title": "node-canvas: Canvas for Node.js",
+      "route": "model",
+      "status": "completed",
+      "detail": "extracted",
+      "excerpt": "",
+      "firstAt": 1793158806640,
+      "updatedAt": 1793158808220
+    },
+    {
+      "id": "page-14",
+      "url": "https://skia.org/docs/user/api/",
+      "title": "Skia Graphics Library",
+      "route": "model",
+      "status": "completed",
+      "detail": "extracted",
+      "excerpt": "",
+      "firstAt": 1793158807160,
+      "updatedAt": 1793158809070
+    },
+    {
+      "id": "page-15",
+      "url": "https://www.chromium.org/developers/design-documents/gpu-accelerated-canvas/",
+      "title": "GPU accelerated canvas",
+      "route": "model",
+      "status": "completed",
+      "detail": "extracted",
+      "excerpt": "",
+      "firstAt": 1793158807680,
+      "updatedAt": 1793158809920
+    },
+    {
+      "id": "page-16",
+      "url": "https://inspect.dev/guides/debugging-electron-apps",
+      "title": "Debugging Electron apps",
+      "route": "you",
+      "status": "running",
+      "detail": "reading",
+      "excerpt": "Remote debugging, renderer inspection and long-frame profiling.",
+      "firstAt": 1793158808200,
+      "updatedAt": 1793158810770
+    },
+    {
+      "id": "page-17",
+      "url": "https://excalidraw.com/blog/performance",
+      "title": "Excalidraw rendering performance",
+      "route": "model",
+      "status": "completed",
+      "detail": "extracted",
+      "excerpt": "",
+      "firstAt": 1793158808720,
+      "updatedAt": 1793158810660
+    },
+    {
+      "id": "page-18",
+      "url": "https://observablehq.com/@d3/force-directed-graph",
+      "title": "Force-directed graph / D3",
+      "route": "model",
+      "status": "completed",
+      "detail": "extracted",
+      "excerpt": "",
+      "firstAt": 1793158809240,
+      "updatedAt": 1793158811510
+    },
+    {
+      "id": "page-19",
+      "url": "https://github.com/d3/d3-force",
+      "title": "d3-force",
+      "route": "code",
+      "status": "completed",
+      "detail": "extracted",
+      "excerpt": "",
+      "firstAt": 1793158809760,
+      "updatedAt": 1793158812360
+    },
+    {
+      "id": "page-20",
+      "url": "https://www.w3.org/TR/html52/scripting-1.html",
+      "title": "Scripting - HTML 5.2",
+      "route": "code",
+      "status": "pending",
+      "detail": "queued",
+      "excerpt": "",
+      "firstAt": 1793158810280,
+      "updatedAt": 1793158813210
+    },
+    {
+      "id": "page-21",
+      "url": "https://github.com/pixijs/pixijs",
+      "title": "PixiJS WebGL renderer",
+      "route": "model",
+      "status": "pending",
+      "detail": "queued",
+      "excerpt": "",
+      "firstAt": 1793158810800,
+      "updatedAt": 1793158813100
+    },
+    {
+      "id": "page-22",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/API/OffscreenCanvas",
+      "title": "OffscreenCanvas - MDN",
+      "route": "code",
+      "status": "running",
+      "detail": "reading",
+      "excerpt": "",
+      "firstAt": 1793158811320,
+      "updatedAt": 1793158813950
+    },
+    {
+      "id": "page-23",
+      "url": "https://github.com/GoogleChromeLabs/comlink",
+      "title": "Comlink: web workers without pain",
+      "route": "model",
+      "status": "pending",
+      "detail": "queued",
+      "excerpt": "",
+      "firstAt": 1793158811840,
+      "updatedAt": 1793158814800
+    },
+    {
+      "id": "page-24",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API",
+      "title": "IndexedDB API - MDN",
+      "route": "you",
+      "status": "pending",
+      "detail": "queued",
+      "excerpt": "",
+      "firstAt": 1793158812360,
+      "updatedAt": 1793158815650
+    },
+    {
+      "id": "page-25",
+      "url": "https://www.electronjs.org/docs/latest/tutorial/security",
+      "title": "Electron security guidelines",
+      "route": "you",
+      "status": "failed",
+      "detail": "HTTP 504 gateway timeout",
+      "excerpt": "HTTP 504 gateway timeout",
+      "firstAt": 1793158812880,
+      "updatedAt": 1793158815540
+    },
+    {
+      "id": "page-26",
+      "url": "https://raster.ink/blog/layered-canvas",
+      "title": "Layered canvas architecture",
+      "route": "model",
+      "status": "running",
+      "detail": "reading",
+      "excerpt": "Layered canvas: static chrome, animated strands, overlay text.",
+      "firstAt": 1793158813400,
+      "updatedAt": 1793158816390
+    },
+    {
+      "id": "page-27",
+      "url": "https://developer.chrome.com/docs/workbox",
+      "title": "Workbox | Chrome Developers",
+      "route": "code",
+      "status": "pending",
+      "detail": "queued",
+      "excerpt": "",
+      "firstAt": 1793158813920,
+      "updatedAt": 1793158817240
+    },
+    {
+      "id": "page-28",
+      "url": "https://github.com/dsh-plugin/registry",
+      "title": "DSH plugin registry",
+      "route": "you",
+      "status": "failed",
+      "detail": "HTTP 404 not found",
+      "excerpt": "Repository not found (HTTP 404).",
+      "firstAt": 1793158814440,
+      "updatedAt": 1793158818090
+    },
+    {
+      "id": "page-29",
+      "url": "https://www.zhihu.com/question/422271312",
+      "title": "Canvas 大屏可视化性能优化",
+      "route": "model",
+      "status": "pending",
+      "detail": "queued",
+      "excerpt": "",
+      "firstAt": 1793158814960,
+      "updatedAt": 1793158817980
+    },
+    {
+      "id": "page-30",
+      "url": "https://juejin.cn/post/7202636731871096890",
+      "title": "从零实现一个 Canvas 监控大屏",
+      "route": "you",
+      "status": "pending",
+      "detail": "queued",
+      "excerpt": "",
+      "firstAt": 1793158815480,
+      "updatedAt": 1793158818830
+    }
+  ],
+  "activities": [
+    {
+      "at": 1793158800000,
+      "kind": "search",
+      "label": "deepseek harness client plugin api",
+      "route": "code"
+    },
+    {
+      "at": 1793158800000,
+      "kind": "start",
+      "label": "session start"
+    },
+    {
+      "at": 1793158800700,
+      "kind": "search",
+      "label": "dsh webresearch event contract",
+      "route": "code"
+    },
+    {
+      "at": 1793158801180,
+      "kind": "result",
+      "label": "deepseek harness client plugin api",
+      "route": "code"
+    },
+    {
+      "at": 1793158801600,
+      "kind": "fetch",
+      "label": "https://github.com/deepseek-ai/deepseek-harness",
+      "route": "model"
+    },
+    {
+      "at": 1793158801900,
+      "kind": "result",
+      "label": "dsh webresearch event contract",
+      "route": "code"
+    },
+    {
+      "at": 1793158802500,
+      "kind": "search",
+      "label": "npm @napi-rs canvas windows prebuilt",
+      "route": "code"
+    },
+    {
+      "at": 1793158802840,
+      "kind": "result",
+      "label": "https://github.com/deepseek-ai/deepseek-harness",
+      "route": "model"
+    },
+    {
+      "at": 1793158803100,
+      "kind": "fetch",
+      "label": "https://www.npmjs.com/package/@napi-rs/canvas",
+      "route": "model"
+    },
+    {
+      "at": 1793158803690,
+      "kind": "result",
+      "label": "npm @napi-rs canvas windows prebuilt",
+      "route": "code"
+    },
+    {
+      "at": 1793158803900,
+      "kind": "search",
+      "label": "canvas 2d dashboard high dpr performance",
+      "route": "code"
+    },
+    {
+      "at": 1793158804380,
+      "kind": "result",
+      "label": "https://www.npmjs.com/package/@napi-rs/canvas",
+      "route": "model"
+    },
+    {
+      "at": 1793158804700,
+      "kind": "fetch",
+      "label": "https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API",
+      "route": "model"
+    },
+    {
+      "at": 1793158805100,
+      "kind": "result",
+      "label": "canvas 2d dashboard high dpr performance",
+      "route": "code"
+    },
+    {
+      "at": 1793158805400,
+      "kind": "search",
+      "label": "chrome mv3 content script canvas snapshot",
+      "route": "code"
+    },
+    {
+      "at": 1793158805960,
+      "kind": "result",
+      "label": "https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API",
+      "route": "model"
+    },
+    {
+      "at": 1793158806300,
+      "kind": "fetch",
+      "label": "https://github.com/Kirito14IT/prompt-spider-ui",
+      "route": "model"
+    },
+    {
+      "at": 1793158806520,
+      "kind": "result",
+      "label": "chrome mv3 content script canvas snapshot",
+      "route": "code"
+    },
+    {
+      "at": 1793158807000,
+      "kind": "search",
+      "label": "dsh plugin sidebar hot reload",
+      "route": "code"
+    },
+    {
+      "at": 1793158807180,
+      "kind": "result",
+      "label": "https://github.com/Kirito14IT/prompt-spider-ui",
+      "route": "model"
+    },
+    {
+      "at": 1793158808220,
+      "kind": "result",
+      "label": "dsh plugin sidebar hot reload",
+      "route": "code"
+    },
+    {
+      "at": 1793158808800,
+      "kind": "search",
+      "label": "webgpu vs canvas 2d line rendering",
+      "route": "code"
+    },
+    {
+      "at": 1793158809500,
+      "kind": "fetch",
+      "label": "https://www.electronjs.org/docs/latest/api/web-contents",
+      "route": "model"
+    },
+    {
+      "at": 1793158809960,
+      "kind": "result",
+      "label": "webgpu vs canvas 2d line rendering",
+      "route": "code"
+    },
+    {
+      "at": 1793158810200,
+      "kind": "search",
+      "label": "resizeobserver devicepixelratio canvas crisp",
+      "route": "code"
+    },
+    {
+      "at": 1793158810430,
+      "kind": "result",
+      "label": "https://www.electronjs.org/docs/latest/api/web-contents",
+      "route": "model"
+    },
+    {
+      "at": 1793158811000,
+      "kind": "fetch",
+      "label": "https://raster.ink/blog/layered-canvas",
+      "route": "model"
+    },
+    {
+      "at": 1793158811280,
+      "kind": "result",
+      "label": "resizeobserver devicepixelratio canvas crisp",
+      "route": "code"
+    },
+    {
+      "at": 1793158811690,
+      "kind": "fail",
+      "label": "https://raster.ink/blog/layered-canvas",
+      "route": "you"
+    },
+    {
+      "at": 1793158811900,
+      "kind": "search",
+      "label": "node canvas todataurl png buffer",
+      "route": "code"
+    },
+    {
+      "at": 1793158812600,
+      "kind": "fetch",
+      "label": "https://github.com/dsh-plugin/registry",
+      "route": "model"
+    },
+    {
+      "at": 1793158812940,
+      "kind": "result",
+      "label": "node canvas todataurl png buffer",
+      "route": "code"
+    },
+    {
+      "at": 1793158813100,
+      "kind": "search",
+      "label": "prompt spider ui github kirito14it",
+      "route": "code"
+    },
+    {
+      "at": 1793158813140,
+      "kind": "fail",
+      "label": "https://github.com/dsh-plugin/registry",
+      "route": "you"
+    },
+    {
+      "at": 1793158814260,
+      "kind": "result",
+      "label": "prompt spider ui github kirito14it",
+      "route": "code"
+    },
+    {
+      "at": 1793158815200,
+      "kind": "search",
+      "label": "dsh plugin manifest schema",
+      "route": "code"
+    },
+    {
+      "at": 1793158816100,
+      "kind": "search",
+      "label": "electrobun webview dsh runtime",
+      "route": "code"
+    },
+    {
+      "at": 1793158816380,
+      "kind": "result",
+      "label": "dsh plugin manifest schema",
+      "route": "code"
+    },
+    {
+      "at": 1793158817220,
+      "kind": "result",
+      "label": "electrobun webview dsh runtime",
+      "route": "code"
+    },
+    {
+      "at": 1793158820100,
+      "kind": "fetch",
+      "label": "https://inspect.dev/guides/debugging-electron-apps",
+      "route": "model"
+    },
+    {
+      "at": 1793158824400,
+      "kind": "end",
+      "label": "fetch retry scheduled",
+      "route": "you"
+    }
+  ]
+}

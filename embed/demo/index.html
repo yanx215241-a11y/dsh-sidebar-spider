@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>spider-widget · offline demo</title>
+<style>
+  :root {
+    color-scheme: dark;
+    --bg: #08090b;
+    --panel: #101013;
+    --border: #29292e;
+    --text: #e8e8e9;
+    --muted: #9998a0;
+    --pink: #f23c83;
+    --teal: #48d7a6;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; min-height: 100%; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: Consolas, "Cascadia Code", "Microsoft YaHei UI", "PingFang SC", monospace;
+    font-size: 12px;
+  }
+  .stage { display: flex; flex-direction: column; background: #0d0e10; border: 1px solid var(--border); overflow: hidden; }
+  .fauxbar, .fauxcard-head {
+    display: flex; align-items: center; gap: 8px; flex: 0 0 auto;
+    height: 42px; padding: 0 12px;
+    background: #141518; border-bottom: 1px solid var(--border);
+    font-size: 10px; letter-spacing: .8px; color: var(--muted);
+  }
+  .fauxbar .dot, .fauxcard-head .dot { width: 6px; height: 6px; background: var(--pink); box-shadow: 0 0 7px var(--pink); }
+  .fauxbar .where { color: #cfcfd3; }
+  .fauxbar .right, .fauxcard-head .right { margin-left: auto; color: var(--teal); letter-spacing: .4px; }
+  .fauxcard-head .btns { margin-left: 12px; color: var(--muted); letter-spacing: 3px; }
+  .mount { position: relative; flex: 1 1 auto; min-height: 0; display: flex; }
+  .mount > .sv-root { flex: 1 1 auto; }
+  .hint {
+    padding: 10px 12px; border-top: 1px solid var(--border);
+    background: #0b0c0e; color: var(--muted); font-size: 9.5px; line-height: 1.7;
+    flex: 0 0 auto;
+  }
+  .hint b { color: #cfcfd3; font-weight: 400; }
+  .hint .k { color: var(--pink); }
+
+  /* --- screenshot modes ------------------------------------------------- */
+  body.mode-sidebar .stage.panel,
+  body.mode-showcase .stage,
+  body.mode-panel .stage.sidebar { /* placeholder, overridden below */ }
+
+  body.mode-sidebar { overflow: hidden; }
+  body.mode-sidebar .stage.panel { display: none; }
+  body.mode-sidebar .stage.sidebar { width: 100vw; height: 100vh; border: 0; }
+  body.mode-sidebar .hint { display: none; }
+
+  body.mode-panel { overflow: hidden; }
+  body.mode-panel .stage.sidebar { display: none; }
+  body.mode-panel .stage.panel { width: 100vw; height: 100vh; border: 0; }
+  body.mode-panel .hint { display: none; }
+
+  body.mode-showcase { padding: 26px; display: flex; gap: 26px; align-items: flex-start; justify-content: center; flex-wrap: wrap; }
+  body.mode-showcase .stage.sidebar { width: 380px; height: 700px; }
+  body.mode-showcase .stage.panel { width: 900px; height: 600px; }
+  body.mode-showcase .hint { display: none; }
+  .showcase-title {
+    width: 100%; max-width: 1306px; display: flex; align-items: baseline; gap: 14px;
+    color: var(--muted); font-size: 10px; letter-spacing: .8px;
+  }
+  .showcase-title strong { color: var(--text); font-size: 12px; letter-spacing: .4px; }
+  .showcase-title .pink { color: var(--pink); }
+  .screenshot-only { display: none; }
+  @media (max-width: 720px) {
+    body.mode-showcase { padding: 10px; gap: 12px; }
+    body.mode-showcase .stage.sidebar { width: 100%; max-width: 380px; }
+    body.mode-showcase .stage.panel { width: 100%; height: 420px; }
+  }
+</style>
+</head>
+<body>
+  <div class="showcase-title">
+    <strong>spider-embed · offline demo</strong>
+    <span>prompt-spider-ui <span class="pink">MIT</span> port · simulated DSH web-search session · no network, no external assets</span>
+  </div>
+
+  <div class="stage sidebar" id="stage-sidebar">
+    <div class="fauxbar">
+      <i class="dot"></i>
+      <span>DSH · 会话</span>
+      <span class="where">右侧栏 · WEB SPIDER 标签</span>
+      <span class="right" id="sidebar-live">—</span>
+    </div>
+    <div class="mount" id="mount-sidebar"></div>
+  </div>
+
+  <div class="stage panel" id="stage-panel">
+    <div class="fauxcard-head">
+      <i class="dot"></i>
+      <span>WEB SPIDER · 浮动面板</span>
+      <span class="right" id="panel-live">—</span>
+      <span class="btns">— □ ×</span>
+    </div>
+    <div class="mount" id="mount-panel"></div>
+  </div>
+
+  <pre id="selftest" hidden></pre>
+  <pre id="errors" hidden></pre>
+
+  <script src="../spider-widget.js"></script>
+  <script src="demo-driver.js"></script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+{
+  "name": "dsh-client-ui-sidebar-spider",
+  "version": "0.1.0",
+  "description": "DSH right-sidebar Spider tab: live Canvas visualization of the agent's web_search / web_fetch activity, with a fullscreen research dashboard (ported from prompt-spider-ui).",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": {
+      "default": "./lib/index.js"
+    },
+    "./client": {
+      "default": "./lib/client.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib/index.js",
+    "lib/client.js",
+    "lib/THIRD_PARTY_LICENSES.txt"
+  ],
+  "dsh": {
+    "client": {
+      "platform": "web"
+    }
+  },
+  "license": "MIT",
+  "keywords": [
+    "dsh",
+    "deepseek-harness",
+    "dsh-plugin",
+    "sidebar",
+    "canvas",
+    "spider",
+    "web-search",
+    "visualization"
+  ],
+  "author": "Kirito14IT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kirito14IT/dsh-sidebar-spider.git"
+  },
+  "homepage": "https://github.com/Kirito14IT/dsh-sidebar-spider#readme",
+  "bugs": {
+    "url": "https://github.com/Kirito14IT/dsh-sidebar-spider/issues"
+  },
+  "scripts": {
+    "build": "node build.mjs",
+    "verify": "node verify.mjs"
+  }
+}

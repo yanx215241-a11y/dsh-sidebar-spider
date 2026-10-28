@@ -1,0 +1,19 @@
+{
+  "name": "dsh-sidebar-spider",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Repo tooling for the DSH Sidebar Spider plugin (see plugin/ for the installable client plugin).",
+  "license": "MIT",
+  "scripts": {
+    "build": "node plugin/build.mjs",
+    "verify": "node plugin/verify.mjs",
+    "build:widget": "node embed/build/build-widget.mjs",
+    "build:scene": "node scene/build/build-scene.mjs",
+    "verify:widget": "node embed/demo/verify-widget.mjs",
+    "verify:scene": "node scene/demo/verify-scene.mjs"
+  },
+  "devDependencies": {
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  }
+}
