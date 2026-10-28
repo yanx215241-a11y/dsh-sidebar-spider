@@ -168,7 +168,7 @@ cd ..\scene; node build\build-scene.mjs
 
 ## 许可与致谢
 
-- 本项目：MIT，Copyright (c) 2026 Kirito14IT。
+- 本项目：MIT，Copyright (c) 2026 yanx215241-a11y。
 - 可视化源自 [prompt-spider-ui](https://github.com/Kirito14IT/prompt-spider-ui)（MIT，Copyright (c) 2026 Kirito14IT）：
   大屏/紧凑组件复用了其 `app/spider.js`、`app/probes.js`、`app/live-layout.js`、`app/orbit.js`、`app/motion.js`
   的绘制实现，最小子集 vendored 在 `vendor/prompt-spider-ui/`（固定 commit 见 `UPSTREAM.json`）。
@@ -188,7 +188,7 @@ cd dsh-sidebar-spider
 git init -b main
 git add -A
 git commit -m "feat: DSH Sidebar Spider client plugin"
-git remote add origin https://github.com/<你的账号>/dsh-sidebar-spider.git
+git remote add origin https://github.com/yanx215241-a11y/dsh-sidebar-spider.git
 git push -u origin main
 ```
 
@@ -198,7 +198,7 @@ git push -u origin main
 2. 把本目录内容（不含 `.git`）拖到 "uploading an existing file" 页面，或先解压随附的 `dsh-sidebar-spider.zip` 再拖；
 3. commit。
 
-> `plugin/package.json` 里的 `repository` / `homepage` / `bugs` 暂按 `Kirito14IT/dsh-sidebar-spider` 填写，账号或仓库名不同的话改一下即可。
+> `plugin/package.json` 里的 `repository` / `homepage` / `bugs` 暂按 `yanx215241-a11y/dsh-sidebar-spider` 填写，账号或仓库名不同的话改一下即可。
 
 ---
 

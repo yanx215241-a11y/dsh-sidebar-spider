@@ -1,5 +1,7 @@
 # NOTICE · 第三方代码与署名
 
+本仓库维护者：yanx215241-a11y（GitHub: https://github.com/yanx215241-a11y）。
+
 本仓库包含来自以下上游项目的代码（MIT 许可）：
 
 ## prompt-spider-ui

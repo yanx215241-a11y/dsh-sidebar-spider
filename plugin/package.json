@@ -34,14 +34,14 @@
     "web-search",
     "visualization"
   ],
-  "author": "Kirito14IT",
+  "author": "yanx215241-a11y",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Kirito14IT/dsh-sidebar-spider.git"
+    "url": "git+https://github.com/yanx215241-a11y/dsh-sidebar-spider.git"
   },
-  "homepage": "https://github.com/Kirito14IT/dsh-sidebar-spider#readme",
+  "homepage": "https://github.com/yanx215241-a11y/dsh-sidebar-spider#readme",
   "bugs": {
-    "url": "https://github.com/Kirito14IT/dsh-sidebar-spider/issues"
+    "url": "https://github.com/yanx215241-a11y/dsh-sidebar-spider/issues"
   },
   "scripts": {
     "build": "node build.mjs",
