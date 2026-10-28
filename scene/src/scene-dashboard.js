@@ -949,12 +949,17 @@ function createSpiderScene(container, options) {
         sliceStart = i;
       }
       const scrollSpeed = scClamp(inner.h * 0.032, 9, 18); // ~14 px/s at 1280x800
-      const offset = state.reducedMotion ? 0 : (scanNow * scrollSpeed) % contentH;
       const strip = blocks.slice(sliceStart);
-      const baseY = inner.y + Math.round(lineH * 0.8);
+      // A strip shorter than the viewport must NOT be duplicated (the seamless
+      // loop would otherwise show the same rows twice); bottom-align it instead.
+      const shortStrip = contentH < inner.h + lineH * 2;
+      const offset = shortStrip || state.reducedMotion ? 0 : (scanNow * scrollSpeed) % contentH;
+      const baseY = shortStrip
+        ? inner.y + Math.max(Math.round(lineH * 0.8), inner.h - contentH + Math.round(lineH * 0.8))
+        : inner.y + Math.round(lineH * 0.8);
       const anchorY = inner.y + inner.h * 0.66;
       const instances = [];
-      for (let copy = 0; copy < 8; copy++) {
+      for (let copy = 0; copy < (shortStrip ? 1 : 8); copy++) {
         let y = baseY + copy * contentH - offset;
         if (y - contentH > inner.y + inner.h) break;
         for (let bi = 0; bi < strip.length; bi++) {
