@@ -119,7 +119,7 @@ cd ..\embed; node build\build-widget.mjs
 cd ..\scene; node build\build-scene.mjs
 ```
 
-- 生成组件需要 `vendor/canvas-engine/app/*.js`（已内置，固定 commit 见 `vendor/canvas-engine/ENGINE.json`）。
+- 生成组件需要 `vendor/canvas-engine/app/*.js`（已内置；构建脚本会对每个模块做 SHA-256 校验，见 `embed/build/engine-lock.json` 与 `scene/build/build-scene.mjs`）。
 - 可选自测：`embed\demo\verify-widget.mjs`（15 项，自带 fake DOM/canvas）与
   `scene\demo\verify-scene.mjs`（11 项，需 `npm i -D @napi-rs/canvas` 做真实 Skia 渲染）。
 - 改完代码让运行中的 DSH 热加载：修改 `plugin/lib/client.js` 的 mtime 即可（`(Get-Item ...).LastWriteTime = Get-Date`），
