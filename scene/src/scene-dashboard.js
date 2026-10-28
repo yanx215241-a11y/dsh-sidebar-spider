@@ -2,14 +2,14 @@
  * spider-scene composition — src/scene-dashboard.js
  *
  * This file is concatenated inside the build wrapper together with the verbatim
- * upstream modules (see build/build-scene.mjs). It provides:
+ * engine modules (see build/build-scene.mjs). It provides:
  *   - createSpiderScene(container, options): one self-contained Canvas-2D
  *     full-screen "检索大屏" dashboard, no DOM chrome, no CSS, no assets.
  *   - the DSH web-research data adapter (setData / push / getState)
  *   - full lifecycle (ResizeObserver, DPR cap 2, RAF pause when hidden,
  *     IntersectionObserver pause, destroy cleanup) mirroring spider-embed.
  *
- * Canvas drawing reuses upstream primitives:
+ * Canvas drawing reuses engine primitives:
  *   SC.spider.drawSpider                          (app/spider.js)   - the creature
  *   SC.probes.probePose                           (app/probes.js)   - reach arm
  *   SC.layout.livePose / alpha                    (app/live-layout.js) - closed orbit + rgba
@@ -18,7 +18,7 @@
  * #drawRouteCards, #drawStream, #drawStats, #drawConfidence, #drawWordGrid,
  * #drawThink, #drawStatus) to web-research data and an arbitrary aspect ratio.
  * Everything else is new; the visual vocabulary (colors, hairline panels,
- * `▪ TITLE`, route colors, mono type) is kept from upstream + app/style.css.
+ * `▪ TITLE`, route colors, mono type) is kept from engine + app/style.css.
  * ========================================================================= */
 
 const SC_MONO = 'Consolas, "Cascadia Code", "Microsoft YaHei", "PingFang SC", monospace';
@@ -98,12 +98,12 @@ function scClamp(value, low, high) {
 function scFinite(value, fallback) {
   return typeof value === 'number' && Number.isFinite(value) ? value : fallback;
 }
-/** Same deterministic 0..1 noise recipe as upstream renderer.js#random. */
+/** Same deterministic 0..1 noise recipe as engine renderer.js#random. */
 function scRand(seed) {
   const value = Math.sin(seed * 127.1 + 311.7) * 43758.5453123;
   return value - Math.floor(value);
 }
-/** Same FNV-1a variant as upstream app/model.js#hash / orbit.js#hash. */
+/** Same FNV-1a variant as engine app/model.js#hash / orbit.js#hash. */
 function scHash(value) {
   let h = 2166136261;
   const text = String(value);
@@ -327,7 +327,7 @@ function createSpiderScene(container, options) {
   const ctx = canvas.getContext('2d', { alpha: false });
   if (!ctx) throw new Error('createSpiderScene: 2d context unavailable.');
   if (typeof ctx.roundRect !== 'function') {
-    // Tiny fallback for older Chromium; upstream app/spider.js uses roundRect.
+    // Tiny fallback for older Chromium; engine app/spider.js uses roundRect.
     ctx.roundRect = function roundRect(x, y, w, h, r) {
       const radius = Math.min(scFinite(r, 0), Math.abs(w) / 2, Math.abs(h) / 2);
       this.moveTo(x + radius, y);
@@ -418,7 +418,7 @@ function createSpiderScene(container, options) {
     if (status === 'completed') return themeRef.code;
     return themeRef.muted;
   }
-  /** Right-aligned translucent tag (upstream alpha() helper reused). */
+  /** Right-aligned translucent tag (engine alpha() helper reused). */
   function tagRight(label, rightX, y, size, color) {
     font(size, 700);
     const value = String(label);
@@ -645,7 +645,7 @@ function createSpiderScene(container, options) {
   function scSmooth(value) {
     return value * value * (3 - 2 * value);
   }
-  /** Inverse of scSmooth on [0,1] (upstream-style smoothstep). */
+  /** Inverse of scSmooth on [0,1] (engine-style smoothstep). */
   function inverseSmooth(value) {
     const v = scClamp(value, 0, 1);
     return 0.5 - Math.sin(Math.asin(1 - 2 * v) / 3);
@@ -775,16 +775,13 @@ function createSpiderScene(container, options) {
     return lines;
   }
   /**
-   * Draw a token flow. `progress` (0..1) is how far the tentacle has swept:
-   * 0 → every token is plain text (untouched row); 1 → full box style. Words
-   * reveal left→right; the token under the tip fades in partially.
+   * Draw a token flow. `contacts` = [{x, alpha}] are probe-tip contact points on
+   * this row's first line: only the token whose span contains a tip is boxed
+   * (smooth proximity falloff, so an immediately adjacent token can catch a faint
+   * edge). Every other token stays plain — there is no row-wide boxing.
    */
-  function drawTokenFlow(tokens, startX, baselineY, rightFirst, right, style, maxLines, lineH, progress) {
-    const reveal = scClamp(scFinite(progress, 0), 0, 1);
-    let wordIndex = 0;
-    let wordCount = 0;
-    for (const token of tokens) if (token && !isPunctToken(token)) wordCount += 1;
-    const revealPos = reveal * wordCount;
+  function drawTokenFlow(tokens, startX, baselineY, rightFirst, right, style, maxLines, lineH, contacts) {
+    const points = contacts && contacts.length ? contacts : null;
     let x = startX;
     let baseline = baselineY;
     let lines = 1;
@@ -802,15 +799,18 @@ function createSpiderScene(container, options) {
         baseline += lineH;
       }
       let boxAlpha = 0;
+      if (!metro.plain && points && lines === 1) {
+        const center = x + metro.width * 0.5;
+        for (const point of points) {
+          const distance = Math.abs(center - point.x);
+          const falloff = scClamp(1 - (distance - metro.width * 0.5) / 14, 0, 1);
+          const value = falloff * point.alpha;
+          if (value > boxAlpha) boxAlpha = value;
+        }
+      }
       if (metro.plain) {
         text(token, x, baseline, '#6f6c75', style.size);
-        x += metro.advance;
-        continue;
-      }
-      const word = wordIndex++;
-      if (word + 1 <= revealPos) boxAlpha = 1;
-      else if (word < revealPos) boxAlpha = revealPos - word;
-      if (boxAlpha <= 0.02) {
+      } else if (boxAlpha <= 0.03) {
         // Untouched token: plain monospace text, no border/fill (same advance).
         text(token, x + style.padX, baseline, tokenPlainColor(style), style.size);
       } else {
@@ -831,7 +831,7 @@ function createSpiderScene(container, options) {
 
   /* ------------------------------------------------------- left: stream */
   /**
-   * The left panel is the data the creature crawls over (upstream's
+   * The left panel is the data the creature crawls over (engine's
    * `studio.prompt` statement stream), rendered as inline BOXED TOKENS like
    * the reference: route-tinted rounded boxes (teal search / salmon fetch /
    * pink failed), dimmer teal result-title boxes, muted excerpt boxes.
@@ -978,13 +978,25 @@ function createSpiderScene(container, options) {
         if (liveBonus < best) { best = liveBonus; anchorIdx = index; }
       });
       const anchor = instances[anchorIdx];
-      // Reach: anchor row fully boxed; the 5 rows above it pulse (tentacles);
-      // rows below (not yet reached) stay plain; copied duplicates are far ⇒ plain.
-      const reachForRank = (rank) => (rank === 0 ? 1 : rank >= 1 && rank <= 5 ? scanExtension(rank - 1, scanNow) : 0);
+      // Per-token contact: probe arms sweep rows in the tentacle band; each arm
+      // boxes ONLY the token under its actual tip (no row-wide boxing). The body
+      // row highlights only the token directly under the body.
+      const bodyX = inner.x + inner.w * (0.55 + (state.reducedMotion ? 0 : 0.035 * Math.sin(scanNow * 0.33)));
+      const scanRightX = textRight - 24;
+      const contactsFor = (rank) => {
+        if (rank === 0) return [{ x: bodyX, alpha: state.reducedMotion ? 0.6 : 0.72 }];
+        if (rank < 1 || rank > 5) return null;
+        const extension = scanExtension(rank - 1, scanNow);
+        if (extension <= 0.04) return null;
+        return [{
+          x: tokenX + extension * (scanRightX - tokenX),
+          alpha: scSmooth(scClamp(extension / 0.3, 0, 1)),
+        }];
+      };
       for (let idx = 0; idx < instances.length; idx++) {
         const inst = instances[idx];
         inst.rank = anchorIdx - idx;
-        inst.reach = reachForRank(inst.rank);
+        inst.contacts = contactsFor(inst.rank);
         if (inst.rank >= 0) {
           rows.push({
             y: inst.mainY,
@@ -1005,29 +1017,29 @@ function createSpiderScene(container, options) {
           rect(p.x + 1, blockTop, p.w - 2, blockH, 'rgba(242,60,131,.08)');
           rect(p.x + 1, blockTop, 2.5 * L.S, blockH, themeRef.pink);
         } else if (inst.rank === 0) {
-          rect(p.x + 1, blockTop, p.w - 2, blockH, 'rgba(242,60,131,.035)');
+          rect(p.x + 1, blockTop, p.w - 2, blockH, 'rgba(242,60,131,.03)');
         }
         if (inst.rank === 0) {
-          // The row sitting under the spider keeps its frame while it flows past.
-          ctx.strokeStyle = SC.layout.alpha(block.live ? themeRef.pink : themeRef.code, 0.35);
+          // Near-invisible frame marks the row under the body; no row-wide boxes.
+          ctx.strokeStyle = SC.layout.alpha(block.live ? themeRef.pink : themeRef.code, 0.12);
           ctx.lineWidth = 1;
           ctx.strokeRect(p.x + 2.5, blockTop + 0.5, p.w - 5, blockH - 1);
         }
-        const reach = inst.reach;
+        const contacts = inst.contacts;
         text(scPad2(block.number), numberX, y, '#45434a', numFont);
         let firstItem = true;
         for (const item of block.items) {
           if (item.type === 'tokens') {
-            drawTokenFlow(item.tokens, tokenX, y, item.firstRight, textRight, item.style, item.maxLines, lineH, reach);
+            drawTokenFlow(item.tokens, tokenX, y, item.firstRight, textRight, item.style, item.maxLines, lineH, contacts);
             if (firstItem) tagRight(block.tagLabel, textRight, y, fs(8.2), statusColor(block.call.status));
             y += item.lines * lineH;
           } else if (item.type === 'mixed') {
             text(item.prefix, item.x, y, '#6f6c75', item.style.size);
-            drawTokenFlow(item.tokens, item.x + item.prefixW, y, textRight, textRight, item.style, item.maxLines, lineH, reach);
+            drawTokenFlow(item.tokens, item.x + item.prefixW, y, textRight, textRight, item.style, item.maxLines, lineH, null);
             y += item.lines * lineH;
           } else if (item.type === 'excerpt') {
             text('│', item.x - 9, y, themeRef.dim, excerptSize);
-            drawTokenFlow(item.tokens, item.x, y, textRight, textRight, item.style, item.maxLines, lineH, reach * 0.9);
+            drawTokenFlow(item.tokens, item.x, y, textRight, textRight, item.style, item.maxLines, lineH, null);
             y += item.lines * lineH;
           } else {
             text(item.text, item.x, y, item.color, item.size);
@@ -1109,7 +1121,7 @@ function createSpiderScene(container, options) {
         const py2 = probe.root.y + (probe.tip.y - probe.root.y) * along;
         ctx.fillRect(px2 - 1 / scale, py2 - 1 / scale, 2 / scale, 2 / scale);
       }
-      // Scan caret marks the tip while the arm is on the row (upstream scanner feel).
+      // Scan caret marks the tip while the arm is on the row (engine scanner feel).
       if (extension > 0.5) {
         ctx.globalAlpha = probe.opacity * Math.min(1, (extension - 0.5) * 3);
         ctx.strokeStyle = 'rgba(236,255,246,.92)';
@@ -1192,7 +1204,7 @@ function createSpiderScene(container, options) {
 
     // 2) one strand per page: colour = route/status, length/alpha = status.
     //    Result threads (one per search result) fill the band first, dimmer, so
-    //    a 30-page session still reads as dense as upstream's 175-word fan.
+    //    a 30-page session still reads as dense as engine's 175-word fan.
     const resultWeights = ['code', 'code', 'code', 'code', 'code', 'model', 'code', 'code', 'code', 'you', 'code', 'code', 'model', 'code', 'code', 'code'];
     const resultThreads = Math.min(160, Math.max(0, m.metrics.results));
     for (let i = 0; i < resultThreads; i++) {
@@ -1309,7 +1321,7 @@ function createSpiderScene(container, options) {
       }
     }
 
-    // 3) measured arc + ticks (upstream renderer.js#drawWeb recipe).
+    // 3) measured arc + ticks (engine renderer.js#drawWeb recipe).
     for (let ring = 0; ring < 2; ring++) {
       ctx.beginPath();
       for (let y = web.y + 2; y <= web.y + web.h - 2; y += 4) {
@@ -1425,7 +1437,7 @@ function createSpiderScene(container, options) {
         const p = (age - k * 0.065) / 1.35;
         if (p < 0 || p > 1 || state.reducedMotion) continue;
         const eased = 1 - Math.pow(1 - p, 3);
-        // Curved flight from the strand end to the metric card (upstream cubic helper).
+        // Curved flight from the strand end to the metric card (engine cubic helper).
         const controlA = { x: start.x + (target.x - start.x) * 0.35, y: start.y - (scRand(i + k + 70) - 0.5) * 40 };
         const controlB = { x: start.x + (target.x - start.x) * 0.78, y: target.y - (scRand(i + k + 90) - 0.5) * 40 };
         const point = SC.motion.cubicPoint(eased, { x: start.x, y: start.y }, controlA, controlB, target);

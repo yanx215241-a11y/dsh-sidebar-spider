@@ -1,0 +1,25 @@
+{
+  "note": "SHA-256 pins of the vendored Canvas engine modules consumed by build-widget.mjs.",
+  "files": {
+    "app/spider.js": {
+      "sha256": "bff247e0de977b0b61f35389796d71ea41f67a76109a302f524361087c20076e",
+      "bytes": 10796
+    },
+    "app/probes.js": {
+      "sha256": "b9221828a6beefb3f698dbc7eff237ed8c07f9025c5b09cf6014a68d21cb843a",
+      "bytes": 9544
+    },
+    "app/live-layout.js": {
+      "sha256": "2d63b83dca209de1903f56784795031ca9a744195d33a8984eaa955d0911dca1",
+      "bytes": 2618
+    },
+    "app/orbit.js": {
+      "sha256": "e42977a79b1d3027a06857831fe64f7bf1f2f1918e12ccc1dd1b76283cbed3d5",
+      "bytes": 3881
+    },
+    "app/motion.js": {
+      "sha256": "37604f460a747f4eea6cd4086cfad7a08be3181376cfd05747d94b118d7b4b1b",
+      "bytes": 4437
+    }
+  }
+}

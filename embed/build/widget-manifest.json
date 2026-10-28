@@ -1,0 +1,19 @@
+{
+  "name": "spider-widget",
+  "version": "1.0.0",
+  "generatedBy": "spider-embed/build/build-widget.mjs",
+  "engine": "canvas-engine",
+  "inputs": [
+    "app/spider.js: verbatim body, ESM import/export shell removed",
+    "app/probes.js: verbatim body, ESM shell removed",
+    "app/live-layout.js: verbatim body (only livePose/alpha/PAGE_SIZE are used by the compact composition)",
+    "app/orbit.js: added optional maxLabels cap (narrow-sidebar label limit)",
+    "app/orbit.js: verbatim body; reused as the optional \"orbit\" view",
+    "app/motion.js: extracted cubicPoint() only (reference-track-bound functions dropped)"
+  ],
+  "bytes": 95641,
+  "sha256": "4b804f05dd8695fa01e37e378fdc5c3bf3e0e30207af6a1bdea4426087be6c88",
+  "exports": [
+    "createSpiderView"
+  ]
+}

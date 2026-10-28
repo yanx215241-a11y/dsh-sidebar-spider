@@ -2,12 +2,12 @@
  * spider-embed composition — src/widget.js
  *
  * This file is concatenated inside the build wrapper together with the verbatim
- * upstream modules (see build/build-widget.mjs). It provides:
+ * engine modules (see build/build-widget.mjs). It provides:
  *   - the compact sidebar composition (header / canvas web / page list / footer)
  *   - the DSH web-research event adapter (push/setPages/... state machine)
  *   - self-injected, id-scoped CSS and full lifecycle cleanup
  *
- * Canvas drawing reuses upstream primitives:
+ * Canvas drawing reuses engine primitives:
  *   SV.spider.drawSpider / legPose / heartbeatAt   (app/spider.js)   – the creature
  *   SV.probes.probePose                            (app/probes.js)   – reach arm
  *   SV.layout.livePose / alpha                     (app/live-layout.js) – closed orbit + rgba helper
@@ -17,7 +17,7 @@
  * #drawRoutingParticles (flight particles) and app/live-renderer.js#web
  * (route targets, dashed probe arm) to a narrow, responsive sidebar.
  * Everything else here is new; the visual vocabulary (colors, mono panel
- * chrome, `▪ TITLE`, route colors, heartbeat) is kept from upstream.
+ * chrome, `▪ TITLE`, route colors, heartbeat) is kept from engine.
  * ========================================================================= */
 
 const SV_MONO = 'Consolas, "Cascadia Code", "Microsoft YaHei UI", "PingFang SC", monospace';
@@ -60,7 +60,7 @@ function svClamp(value, low, high) {
 function svFinite(value, fallback) {
   return typeof value === 'number' && Number.isFinite(value) ? value : fallback;
 }
-/** Same FNV-1a variant as upstream app/model.js#hash (used for stable node placement). */
+/** Same FNV-1a variant as engine app/model.js#hash (used for stable node placement). */
 function svHash(value) {
   let h = 2166136261;
   for (const ch of String(value)) {
@@ -69,12 +69,12 @@ function svHash(value) {
   }
   return h >>> 0;
 }
-/** Same helper as upstream app/live-layout.js#alpha. */
+/** Same helper as engine app/live-layout.js#alpha. */
 function svAlpha(hex, value) {
   const n = parseInt(hex.slice(1), 16);
   return 'rgba(' + ((n >> 16) & 255) + ',' + ((n >> 8) & 255) + ',' + (n & 255) + ',' + value + ')';
 }
-/** deterministic 0..1 noise, same recipe as upstream renderer.js#random. */
+/** deterministic 0..1 noise, same recipe as engine renderer.js#random. */
 function svRand(seed) {
   const value = Math.sin(seed * 127.1 + 311.7) * 43758.5453123;
   return value - Math.floor(value);
@@ -317,7 +317,7 @@ function createSpiderView(container, options) {
 
   const ctx = canvas.getContext('2d', { alpha: false });
   if (ctx && typeof ctx.roundRect !== 'function') {
-    // Tiny fallback for older Chromium; upstream app/spider.js uses roundRect.
+    // Tiny fallback for older Chromium; engine app/spider.js uses roundRect.
     ctx.roundRect = function roundRect(x, y, w, h, r) {
       const radius = Math.min(svFinite(r, 0), Math.abs(w) / 2, Math.abs(h) / 2);
       this.moveTo(x + radius, y);
@@ -1286,7 +1286,7 @@ function createSpiderView(container, options) {
       activeProbes: focusId ? 1 : 0,
     });
     ctx.restore();
-    // Reuse upstream probes.js arm geometry, drawn as a dotted reach (live-renderer.js#web recipe).
+    // Reuse engine probes.js arm geometry, drawn as a dotted reach (live-renderer.js#web recipe).
     if (focusNode && state.attention.until > wall) {
       const page = state.pages.get(state.selectedId === focusId ? state.selectedId : state.attention.id);
       if (page) {

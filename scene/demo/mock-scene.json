@@ -165,9 +165,9 @@
     {
       "id": "call-09",
       "tool": "web_fetch",
-      "label": "https://github.com/Kirito14IT/prompt-spider-ui",
+      "label": "https://github.com/yanx215241-a11y/dsh-sidebar-spider",
       "queries": [],
-      "url": "https://github.com/Kirito14IT/prompt-spider-ui",
+      "url": "https://github.com/yanx215241-a11y/dsh-sidebar-spider",
       "status": "completed",
       "startedAt": 1793158806300,
       "endedAt": 1793158807180,
@@ -309,9 +309,9 @@
     {
       "id": "call-17",
       "tool": "web_search",
-      "label": "prompt spider ui github kirito14it",
+      "label": "prompt spider ui github yanx215241-a11y",
       "queries": [
-        "prompt spider ui github kirito14it"
+        "prompt spider ui github yanx215241-a11y"
       ],
       "url": "",
       "status": "completed",
@@ -322,8 +322,8 @@
       "bytes": -1,
       "excerpt": "",
       "resultTitles": [
-        "prompt-spider-ui — every word, one fork",
-        "Kirito14IT/prompt-spider-ui README",
+        "canvas-engine — every word, one fork",
+        "yanx215241-a11y/dsh-sidebar-spider README",
         "Prompt spider dashboard screenshots"
       ]
     },
@@ -432,8 +432,8 @@
     },
     {
       "id": "page-05",
-      "url": "https://github.com/Kirito14IT/prompt-spider-ui",
-      "title": "prompt-spider-ui: every word, one fork",
+      "url": "https://github.com/yanx215241-a11y/dsh-sidebar-spider",
+      "title": "canvas-engine: every word, one fork",
       "route": "code",
       "status": "completed",
       "detail": "extracted",
@@ -816,7 +816,7 @@
     {
       "at": 1793158806300,
       "kind": "fetch",
-      "label": "https://github.com/Kirito14IT/prompt-spider-ui",
+      "label": "https://github.com/yanx215241-a11y/dsh-sidebar-spider",
       "route": "model"
     },
     {
@@ -834,7 +834,7 @@
     {
       "at": 1793158807180,
       "kind": "result",
-      "label": "https://github.com/Kirito14IT/prompt-spider-ui",
+      "label": "https://github.com/yanx215241-a11y/dsh-sidebar-spider",
       "route": "model"
     },
     {
@@ -912,7 +912,7 @@
     {
       "at": 1793158813100,
       "kind": "search",
-      "label": "prompt spider ui github kirito14it",
+      "label": "prompt spider ui github yanx215241-a11y",
       "route": "code"
     },
     {
@@ -924,7 +924,7 @@
     {
       "at": 1793158814260,
       "kind": "result",
-      "label": "prompt spider ui github kirito14it",
+      "label": "prompt spider ui github yanx215241-a11y",
       "route": "code"
     },
     {

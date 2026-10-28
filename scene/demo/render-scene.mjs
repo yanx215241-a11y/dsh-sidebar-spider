@@ -108,7 +108,7 @@ async function render({ width, height, name, pixelRatio = 1, locale = 'zh', anim
 }
 
 const dpr = process.argv.includes('--dpr');
-console.log(`spider-scene ${meta.version} · upstream ${meta.upstream.commit.slice(0, 7)} (v${meta.upstream.version})`);
+console.log(`spider-scene ${meta.version} · engine ${meta.engine} (v${meta.engine.version})`);
 
 const model = createMockModel();
 await writeFile(join(HERE, 'mock-scene.json'), JSON.stringify(model, null, 2) + '\n');

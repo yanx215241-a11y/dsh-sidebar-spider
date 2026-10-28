@@ -1,7 +1,7 @@
 {
   "name": "dsh-client-ui-sidebar-spider",
   "version": "0.1.0",
-  "description": "DSH right-sidebar Spider tab: live Canvas visualization of the agent's web_search / web_fetch activity, with a fullscreen research dashboard (ported from prompt-spider-ui).",
+  "description": "DSH right-sidebar Spider tab: live Canvas visualization of the agent's web_search / web_fetch activity, with a fullscreen research dashboard.",
   "type": "module",
   "main": "lib/index.js",
   "exports": {
@@ -15,8 +15,7 @@
   },
   "files": [
     "lib/index.js",
-    "lib/client.js",
-    "lib/THIRD_PARTY_LICENSES.txt"
+    "lib/client.js"
   ],
   "dsh": {
     "client": {

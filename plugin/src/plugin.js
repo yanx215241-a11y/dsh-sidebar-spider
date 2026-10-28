@@ -12,7 +12,7 @@
  * Two presentations share one live feed:
  *   - compact widget  (SPIDER.createSpiderView)  when the panel is narrow
  *   - dashboard scene (SPIDER_SCENE.createSpiderScene) when the panel is wide
- *     (the right sidebar's fullscreen mode → the upstream prompt-spider-ui
+ *     (the right sidebar's fullscreen mode → the research-dashboard
  *     style "检索大屏")
  *
  * Live data: ctx.sessions.binding(sessionId).eventSource is the same event

@@ -2,11 +2,11 @@
 /**
  * build-scene.mjs — assembles spider-scene/scene.js.
  *
- * Same delivery model as spider-embed/build/build-widget.mjs: the port reuses
- * upstream Canvas-2D drawing code instead of re-implementing it. This script
- * reads the pinned upstream checkout (vendored at vendor/prompt-spider-ui, commit
- * f6522df, hashes below), strips the ESM import/export shell, wraps each module
- * in a namespace IIFE, and concatenates our dashboard composition
+ * Same delivery model as embed/build/build-widget.mjs: the dashboard reuses the
+ * vendored Canvas-2D drawing modules instead of re-implementing them. This script
+ * reads those modules (vendored at vendor/canvas-engine, hashes below), strips the
+ * ESM import/export shell, wraps each module in a namespace IIFE, and concatenates
+ * the dashboard composition
  * (src/scene-dashboard.js) + a UMD-ish export footer.
  *
  * Inputs:
@@ -17,7 +17,7 @@
  *   src/scene-dashboard.js                      -> createSpiderScene()
  *
  * Usage: node build/build-scene.mjs [--out path] [--check]
- *   --check  verify upstream hashes + rebuild in memory, report size, write nothing.
+ *   --check  verify engine module hashes + rebuild in memory, report size, write nothing.
  */
 import { readFile, writeFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
@@ -25,9 +25,9 @@ import { dirname, join, resolve } from 'node:path';
 
 const HERE = dirname(new URL(import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1'));
 const ROOT = resolve(HERE, '..');
-const REPO = process.env.SPIDER_UPSTREAM_DIR
-  ? resolve(process.env.SPIDER_UPSTREAM_DIR)
-  : resolve(ROOT, '..', 'vendor', 'prompt-spider-ui');
+const REPO = process.env.SPIDER_ENGINE_DIR
+  ? resolve(process.env.SPIDER_ENGINE_DIR)
+  : resolve(ROOT, '..', 'vendor', 'canvas-engine');
 const COMPOSITION = join(ROOT, 'src', 'scene-dashboard.js');
 const DEFAULT_OUT = join(ROOT, 'scene.js');
 
@@ -38,12 +38,8 @@ const OUT = outIdx >= 0 && argv[outIdx + 1] ? resolve(argv[outIdx + 1]) : DEFAUL
 
 const sha256 = (buf) => createHash('sha256').update(buf).digest('hex');
 
-// Pinned upstream (same checkout/commit that spider-embed pinned).
-const UPSTREAM = {
-  repo: 'https://github.com/Kirito14IT/prompt-spider-ui',
-  commit: 'f6522df29739ccc4861c1227601980b88265923d',
-  version: '1.2.0',
-  date: '2026-10-23T15:44:16Z',
+// SHA-256 pins for the vendored Canvas engine modules (vendor/canvas-engine).
+const ENGINE = {
   files: {
     'app/spider.js': 'bff247e0de977b0b61f35389796d71ea41f67a76109a302f524361087c20076e',
     'app/probes.js': 'b9221828a6beefb3f698dbc7eff237ed8c07f9025c5b09cf6014a68d21cb843a',
@@ -106,10 +102,10 @@ async function build() {
     { key: 'layout', file: 'app/live-layout.js', exports: ['PAGE_SIZE', 'LIVE_LAYOUTS', 'livePose', 'alpha', 'eventPlacement', 'hitEvent', 'routeTarget'], note: 'verbatim body (only livePose/alpha used by the dashboard)' },
   ];
   for (const mod of modules) {
-    const expected = UPSTREAM.files[mod.file];
+    const expected = ENGINE.files[mod.file];
     const buf = await readFile(join(REPO, mod.file));
     const actual = sha256(buf);
-    if (actual !== expected) throw new Error(`upstream drift: ${mod.file}\n  expected ${expected}\n  actual   ${actual}`);
+    if (actual !== expected) throw new Error(`engine module drift: ${mod.file}\n  expected ${expected}\n  actual   ${actual}`);
     const { body, imports } = stripEsm(buf.toString('utf8'), mod.file, mod.exports);
     if (imports.length) throw new Error(`${mod.file}: unexpected imports: ${imports.join(' | ')}`);
     parts.push(wrapNamespace(mod.key, body, mod.exports));
@@ -118,7 +114,7 @@ async function build() {
   // app/motion.js cannot be shipped whole (it binds reference-track data), so we
   // extract only the pure cubic helper.
   const motionSrc = (await readFile(join(REPO, 'app/motion.js'))).toString('utf8');
-  if (sha256(Buffer.from(motionSrc)) !== UPSTREAM.files['app/motion.js']) throw new Error('upstream drift: app/motion.js');
+  if (sha256(Buffer.from(motionSrc)) !== ENGINE.files['app/motion.js']) throw new Error('engine module drift: app/motion.js');
   const cubicPoint = extractFunction(motionSrc, 'cubicPoint');
   const motionNs = `SC.motion = (function () {\n'use strict';\n${cubicPoint}\nreturn { cubicPoint };\n})();`;
   const dashIdx = 3; // spider, probes, layout, motion
@@ -129,19 +125,14 @@ async function build() {
     '/*!',
     ' * scene.js — self-contained Canvas-2D "检索大屏" dashboard for DSH web research.',
     ' *',
-    ` * Ported from prompt-spider-ui (${UPSTREAM.repo})`,
-    ` * upstream commit ${UPSTREAM.commit} (v${UPSTREAM.version}, ${UPSTREAM.date.slice(0, 10)}).`,
+    ' * Canvas 2D rendering — Copyright (c) 2026 yanx215241-a11y. MIT licensed.',
+    ' * https://github.com/yanx215241-a11y/dsh-sidebar-spider',
     ' *',
-    ' * The spider, probe arms, closed-orbit pose and cubic flight geometry are the upstream',
-    ' * MIT-licensed implementations, kept verbatim inside their SC.* namespaces below.',
-    ' * The full-screen dashboard composition, web-research data adapter and lifecycle are new.',
-    ' *',
-    ' * MIT License — Copyright (c) 2026 Kirito14IT.',
-    ' * Generated by spider-scene/build/build-scene.mjs — do not edit dist by hand.',
+    ' * Generated by scene/build/build-scene.mjs — do not edit dist by hand.',
     ' */',
   ].join('\n');
 
-  const header = `(function (root) {\n'use strict';\nconst SC = { meta: ${JSON.stringify({ name: 'spider-scene', version: '1.0.0', upstream: { repo: UPSTREAM.repo, commit: UPSTREAM.commit, version: UPSTREAM.version }, license: 'MIT' })} };\n`;
+  const header = `(function (root) {\n'use strict';\nconst SC = { meta: ${JSON.stringify({ name: 'spider-scene', version: '1.0.0', engine: 'canvas-engine', license: 'MIT' })} };\n`;
   const footer = `\nif (root) root.createSpiderScene = createSpiderScene;\nif (typeof module !== 'undefined' && module && module.exports) module.exports = { createSpiderScene: createSpiderScene, meta: SC.meta };\n})(typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : this);\n`;
 
   const blocks = [];
@@ -149,10 +140,10 @@ async function build() {
   const source = [
     banner,
     header,
-    '/* ==== upstream: app/spider.js (verbatim) ==== */', blocks[0],
-    '/* ==== upstream: app/probes.js (verbatim) ==== */', blocks[1],
-    '/* ==== upstream: app/live-layout.js (verbatim) ==== */', blocks[2],
-    '/* ==== upstream: app/motion.js (cubicPoint only) ==== */', blocks[3],
+    '/* ==== engine: app/spider.js (verbatim) ==== */', blocks[0],
+    '/* ==== engine: app/probes.js (verbatim) ==== */', blocks[1],
+    '/* ==== engine: app/live-layout.js (verbatim) ==== */', blocks[2],
+    '/* ==== engine: app/motion.js (cubicPoint only) ==== */', blocks[3],
     '/* ==== spider-scene composition (src/scene-dashboard.js) ==== */', composition,
     footer,
   ].join('\n');

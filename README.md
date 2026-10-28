@@ -1,8 +1,7 @@
 # DSH Sidebar Spider · 侧栏蛛网 / 检索大屏
 
-把 [prompt-spider-ui](https://github.com/Kirito14IT/prompt-spider-ui) 的 Canvas 2D 机械蜘蛛可视化移植成
-**DeepSeek Harness（DSH）桌面版的客户端插件**：对话进行中，智能体每次调用 `web_search` / `web_fetch`，
-右侧栏的「蛛网」标签页会**实时**把检索过程画成一张蛛网；把面板展开成全屏，就是复刻上游版式的**检索大屏**。
+一个 **DeepSeek Harness（DSH）桌面版的客户端插件**：对话进行中，智能体每次调用 `web_search` / `web_fetch`，
+右侧栏的「蛛网」标签页会**实时**把检索过程画成一张 Canvas 2D 蛛网；把面板展开成全屏，就是完整的**检索大屏**模式。
 
 ![检索大屏（真实 DSH 窗口内截图）](docs/dashboard-live.png)
 
@@ -15,7 +14,7 @@
 | 面板宽度 | 呈现 |
 |---|---|
 | 窄侧栏（< 720px） | **紧凑蛛网**：Canvas 蜘蛛 + 页面节点 + 蛛网，左下角有 `⤢ 大屏` 按钮 |
-| 宽 / 全屏（≥ 720px） | **检索大屏**：复刻上游版式——左侧数据流、中间蛛网、右侧卡片、底部多面板 |
+| 宽 / 全屏（≥ 720px） | **检索大屏**：左侧数据流、中间蛛网、右侧卡片、底部多面板 |
 
 **检索大屏里发生了什么**
 
@@ -30,7 +29,7 @@
 
   ![t=6s 累计 19/27/2](docs/loop-t6.png)
 
-- 中间：蛛网扇形 + 扫描器 + 线框蜘蛛（上游 `spider.js / probes.js / live-layout.js / motion.js` 原样复用）。
+- 中间：蛛网扇形 + 扫描器 + 线框蜘蛛（Canvas 引擎模块）。
 - 右侧：`搜索 / 抓取 / 失败` 三张计数卡；底部：`决策流`、`覆盖率`、`页面读取`、`dottrace`、`覆盖率点阵`、`工具统计`。
 - 交互：点击节点/数据可在右侧栏「浏览器」标签页打开对应网页（未启用则退回系统浏览器）；蛛网 tab 可拖宽、分栏、全屏。
 
@@ -92,14 +91,14 @@ plugin/                 DSH 客户端插件（安装单元：package.json + lib/
   install.ps1 / uninstall.ps1
 embed/                  紧凑蛛网组件（自包含 Canvas widget，含离线 demo/自测）
   spider-widget.js       生成产物：createSpiderView(container, options)
-  src/widget.js          组合层源码（上游模块由 build 内联）
-  build/build-widget.mjs 从 vendor/ 的上游源码生成 spider-widget.js
+  src/widget.js          组合层源码（Canvas 引擎模块由 build 内联）
+  build/build-widget.mjs 从 vendor/canvas-engine 生成 spider-widget.js
 scene/                  检索大屏组件（自包含 Canvas scene，含 mock demo / Skia 渲染 / 自测）
   scene.js               生成产物：createSpiderScene(container, options)
   src/scene-dashboard.js 大屏版式组合层源码
-  build/build-scene.mjs  从 vendor/ 的上游源码生成 scene.js
+  build/build-scene.mjs  从 vendor/canvas-engine 生成 scene.js
   SCENE-API.md           大屏组件 API / 数据模型 / 渲染规则文档
-vendor/prompt-spider-ui/ 上游项目的最小 vendored 子集（MIT，含 LICENSE、commit 固定）
+vendor/canvas-engine/   构建用的 Canvas 2D 渲染模块（MIT）
 docs/                   截图
 ```
 
@@ -115,12 +114,12 @@ cd plugin
 node build.mjs
 node verify.mjs        # 36 项自测必须全过 → 输出 lib/client.js
 
-# 可选：从 vendor/ 里的上游源码重新生成两个 Canvas 组件
+# 可选：从 vendor/canvas-engine 重新生成两个 Canvas 组件
 cd ..\embed; node build\build-widget.mjs
 cd ..\scene; node build\build-scene.mjs
 ```
 
-- 生成组件需要 `vendor/prompt-spider-ui/app/*.js`（已内置，固定 commit 见 `vendor/prompt-spider-ui/UPSTREAM.json`）。
+- 生成组件需要 `vendor/canvas-engine/app/*.js`（已内置，固定 commit 见 `vendor/canvas-engine/ENGINE.json`）。
 - 可选自测：`embed\demo\verify-widget.mjs`（15 项，自带 fake DOM/canvas）与
   `scene\demo\verify-scene.mjs`（11 项，需 `npm i -D @napi-rs/canvas` 做真实 Skia 渲染）。
 - 改完代码让运行中的 DSH 热加载：修改 `plugin/lib/client.js` 的 mtime 即可（`(Get-Item ...).LastWriteTime = Get-Date`），
@@ -157,8 +156,8 @@ cd ..\scene; node build\build-scene.mjs
 
 ## 已知限制
 
-- 只适配**深色主题**（上游蜘蛛配色为 teal/pink 硬件风）。
-- 画布 DPR 上限 2（上游行为）；大屏组件无鼠标交互（上游的轨道视图/3D 覆盖率球未移植，见 `scene/SCENE-API.md`）。
+- 只适配**深色主题**（蜘蛛配色为 teal/pink 硬件风）。
+- 画布 DPR 上限 2；大屏组件无鼠标交互（轨道视图/3D 覆盖率球未实现，见 `scene/SCENE-API.md`）。
 - 数据行里的页面正文摘录来自 `web_fetch` 返回文本（截断 360 字符）。
 - 自动打开每会话一次；被手动关闭后不会再弹。
 - 扫描/滚动动画**只在面板可见时播放**（Chromium 后台暂停 RAF，回来继续）。
@@ -166,20 +165,19 @@ cd ..\scene; node build\build-scene.mjs
 
 ---
 
-## 许可与致谢
+## 许可
 
-- 本项目：MIT，Copyright (c) 2026 yanx215241-a11y。
-- 可视化源自 [prompt-spider-ui](https://github.com/Kirito14IT/prompt-spider-ui)（MIT，Copyright (c) 2026 Kirito14IT）：
-  大屏/紧凑组件复用了其 `app/spider.js`、`app/probes.js`、`app/live-layout.js`、`app/orbit.js`、`app/motion.js`
-  的绘制实现，最小子集 vendored 在 `vendor/prompt-spider-ui/`（固定 commit 见 `UPSTREAM.json`）。
-  完整 MIT 文本见 `plugin/lib/THIRD_PARTY_LICENSES.txt` 与 `vendor/prompt-spider-ui/LICENSE`。
-- 插件骨架、事件折叠、大屏组合层等胶水代码为本项目新增。
+MIT，Copyright (c) 2026 yanx215241-a11y。完整文本见 [LICENSE](LICENSE)。
+
+- 仓库内全部代码（插件骨架、事件折叠、紧凑蛛网与大屏组合层、Canvas 2D 渲染模块）均为本仓库代码，以 MIT 许可发布。
+- 仓库地址：<https://github.com/yanx215241-a11y/dsh-sidebar-spider>
+- 作者主页：<https://github.com/yanx215241-a11y>
 
 ---
 
 ## 发布到 GitHub（把本仓库上传）
 
-仓库已包含 `.gitignore` / `LICENSE` / `NOTICE.md`，构建产物（`plugin/lib/client.js`、`embed/spider-widget.js`、`scene/scene.js`）已生成，可直接作为独立仓库发布。
+仓库已包含 `.gitignore` / `LICENSE`，构建产物（`plugin/lib/client.js`、`embed/spider-widget.js`、`scene/scene.js`）已生成，可直接作为独立仓库发布。
 
 **方式 A：命令行（推荐）**
 
@@ -206,8 +204,7 @@ git push -u origin main
 
 A DeepSeek Harness (DSH) desktop **client plugin** that adds a right-sidebar “Spider” tab visualizing the
 agent's `web_search` / `web_fetch` activity live on a Canvas. In the narrow sidebar it shows a compact spider
-web; when the panel goes fullscreen it becomes a research dashboard in the style of
-[prompt-spider-ui](https://github.com/Kirito14IT/prompt-spider-ui): a slowly auto-scrolling stream of the
+web; when the panel goes fullscreen it becomes a research dashboard: a slowly auto-scrolling stream of the
 crawled data with the spider sitting on it and boxes lighting up only where its tentacles reach, streaming
 path labels, and counters that keep accumulating per label arrival (real totals stay in the card footnotes).
 

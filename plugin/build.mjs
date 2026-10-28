@@ -3,8 +3,8 @@
  * Assemble the Sidebar Spider DSH client plugin bundle.
  *
  * Inputs
- *   ../embed/spider-widget.js   compact Canvas spider view (built from prompt-spider-ui)
- *   ../scene/scene.js           full-screen dashboard scene (optional; same upstream port)
+ *   ../embed/spider-widget.js   compact Canvas spider view (generated from embed/)
+ *   ../scene/scene.js           full-screen dashboard scene (optional; same engine port)
  *   ./src/plugin.js                    browser-half plugin source (uses `require("react")`)
  *
  * Output
@@ -29,7 +29,7 @@ const pkg = JSON.parse(fs.readFileSync(path.resolve(PKG_DIR, "package.json"), "u
 const pluginSource = fs.readFileSync(SOURCE, "utf8");
 
 /**
- * Embed an upstream-style IIFE (`(function (root) { ... })(globalThis)`) so its
+ * Embed an engine-style IIFE (`(function (root) { ... })(globalThis)`) so its
  * global export becomes a factory-scoped constant instead of a global, and its
  * CommonJS tail cannot clobber our module.exports.
  */
@@ -41,10 +41,10 @@ function embedIife(file, globalName, constName) {
   ];
   const invocation = patterns.find((candidate) => source.includes(candidate));
   if (!invocation) {
-    throw new Error(`${path.basename(file)}: IIFE invocation marker not found (upstream layout changed?)`);
+    throw new Error(`${path.basename(file)}: IIFE invocation marker not found (engine layout changed?)`);
   }
   const patched = source.replace(invocation, "})(__ROOT__);");
-  return `// ===== BEGIN embedded ${path.basename(file)} (MIT, prompt-spider-ui f6522df) =====
+  return `// ===== BEGIN embedded ${path.basename(file)} (MIT, this repository) =====
 var ${constName} = (function () {
   var __ROOT__ = {};
   var module = { exports: {} };

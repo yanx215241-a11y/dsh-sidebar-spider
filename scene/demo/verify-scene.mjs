@@ -101,7 +101,7 @@ console.log('meta:', JSON.stringify(meta));
 await check('loads via require() and exposes createSpiderScene + meta', () => {
   assert.equal(typeof createSpiderScene, 'function');
   assert.equal(meta.name, 'spider-scene');
-  assert.equal(meta.upstream.commit, 'f6522df29739ccc4861c1227601980b88265923d');
+  assert.equal(meta.engine, 'canvas-engine');
 });
 
 await check('contract: el/canvas/setData/push/resize/destroy/snapshot/getState exposed', () => {

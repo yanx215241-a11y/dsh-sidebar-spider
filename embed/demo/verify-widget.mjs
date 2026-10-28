@@ -46,11 +46,11 @@ function assertClose(actual, expected, tolerance, message) {
 }
 
 const PAGES = [
-  { id: 'gh-prompt-spider-ui', url: 'https://github.com/Kirito14IT/prompt-spider-ui', title: 'Kirito14IT/prompt-spider-ui · GitHub', source: 'search' },
-  { id: 'gh-api-trees', url: 'https://api.github.com/repos/Kirito14IT/prompt-spider-ui/git/trees/main', title: 'GitHub REST API · git trees endpoint', source: 'search' },
+  { id: 'gh-canvas-engine', url: 'https://github.com/yanx215241-a11y/dsh-sidebar-spider', title: 'yanx215241-a11y/dsh-sidebar-spider · GitHub', source: 'search' },
+  { id: 'gh-api-trees', url: 'https://api.github.com/repos/yanx215241-a11y/dsh-sidebar-spider/git/trees/main', title: 'GitHub REST API · git trees endpoint', source: 'search' },
   { id: 'mdn-canvas', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API', title: 'Canvas API · MDN Web Docs', source: 'search' },
-  { id: 'raw-renderer', url: 'https://raw.githubusercontent.com/Kirito14IT/prompt-spider-ui/main/app/renderer.js', title: 'renderer.js · raw source (29.9 kB)', source: 'search' },
-  { id: 'blocked-page', url: 'https://example.invalid/blocked-page', title: 'blocked-page · upstream preview asset', source: 'search' },
+  { id: 'raw-renderer', url: 'https://raw.githubusercontent.com/yanx215241-a11y/dsh-sidebar-spider/main/app/renderer.js', title: 'renderer.js · raw source (29.9 kB)', source: 'search' },
+  { id: 'blocked-page', url: 'https://example.invalid/blocked-page', title: 'blocked-page · engine preview asset', source: 'search' },
 ];
 function page(id) {
   return PAGES.find((item) => item.id === id);
@@ -66,16 +66,16 @@ function pageStatus(id, status, extra) {
 function scenario() {
   return [
     { at: 0, event: { type: 'session.start', sessionId: 'verify-session', title: 'DSH WEB SPIDER', modelName: 'deepseek-harness' } },
-    { at: 220, event: { type: 'tool.start', id: 'search-1', tool: 'web_search', query: 'prompt-spider-ui' } },
-    { at: 480, event: discovered('gh-prompt-spider-ui') },
+    { at: 220, event: { type: 'tool.start', id: 'search-1', tool: 'web_search', query: 'canvas-engine' } },
+    { at: 480, event: discovered('gh-canvas-engine') },
     { at: 640, event: discovered('gh-api-trees') },
     { at: 800, event: discovered('mdn-canvas') },
     { at: 960, event: discovered('raw-renderer') },
     { at: 1120, event: discovered('blocked-page') },
     { at: 1260, event: { type: 'tool.end', id: 'search-1', status: 'completed' } },
-    { at: 1420, event: { type: 'tool.start', id: 'fetch-1', tool: 'web_fetch', url: page('gh-prompt-spider-ui').url } },
-    { at: 1680, event: pageStatus('gh-prompt-spider-ui', 'running', { route: 'model' }) },
-    { at: 2320, event: pageStatus('gh-prompt-spider-ui', 'completed', { route: 'model', score: 0.92 }) },
+    { at: 1420, event: { type: 'tool.start', id: 'fetch-1', tool: 'web_fetch', url: page('gh-canvas-engine').url } },
+    { at: 1680, event: pageStatus('gh-canvas-engine', 'running', { route: 'model' }) },
+    { at: 2320, event: pageStatus('gh-canvas-engine', 'completed', { route: 'model', score: 0.92 }) },
     { at: 2420, event: { type: 'tool.end', id: 'fetch-1', status: 'completed' } },
     { at: 2520, event: { type: 'tool.start', id: 'fetch-2', tool: 'web_fetch', url: page('gh-api-trees').url } },
     { at: 2820, event: pageStatus('gh-api-trees', 'running', { route: 'model' }) },
@@ -175,7 +175,7 @@ check('session.start / tool / page events build the expected state', () => {
 });
 
 /* =========================== 3. drawing primitives ====================== */
-check('upstream spider body / legs / probes / pulse render calls are emitted', () => {
+check('engine spider body / legs / probes / pulse render calls are emitted', () => {
   const harness = createHarness({ width: 380, height: 700, stageWidth: 380, stageHeight: 340, dpr: 2 });
   const view = harness.run(WIDGET, { title: 'DSH WEB SPIDER' });
   harness.triggerResize();

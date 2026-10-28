@@ -23,7 +23,7 @@ const QUERIES = [
   'webgpu vs canvas 2d line rendering',
   'resizeobserver devicepixelratio canvas crisp',
   'node canvas todataurl png buffer',
-  'prompt spider ui github kirito14it',
+  'prompt spider ui github yanx215241-a11y',
   'dsh plugin manifest schema',
   'electrobun webview dsh runtime',
 ];
@@ -39,7 +39,7 @@ const RESULT_TITLES = [
   ['WebGPU vs Canvas2D line drawing benchmarks', 'GPU line rendering performance', 'When Canvas2D is fast enough'],
   ['ResizeObserver + devicePixelRatio canvas setup', 'Crisp canvas on monitor DPI changes', 'Preventing blurry canvas on zoom'],
   ['node-canvas toDataURL returns base64 PNG', '@napi-rs/canvas encodePNG API', 'Write PNG buffer from canvas in Node'],
-  ['prompt-spider-ui — every word, one fork', 'Kirito14IT/prompt-spider-ui README', 'Prompt spider dashboard screenshots'],
+  ['canvas-engine — every word, one fork', 'yanx215241-a11y/dsh-sidebar-spider README', 'Prompt spider dashboard screenshots'],
   ['DSH plugin manifest reference', 'plugin.json schema and capabilities', 'Client plugin entry points'],
   ['electrobun webview runtime notes', 'DSH runtime: embedded Chromium version', 'Webview performance for canvas apps'],
 ];
@@ -52,7 +52,7 @@ const FETCH_EXCERPTS = {
     'Prebuilt Skia bindings for Node.js. createCanvas(width, height) returns a Canvas with getContext("2d"), toBuffer("image/png") and toDataURL(); fonts are resolved from the host system or registered via GlobalFonts.registerFromPath.',
   'https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API':
     'The Canvas API provides a means for drawing graphics via JavaScript and the HTML canvas element. Among other things, it can be used for animation, game graphics, data visualization, photo manipulation, and real-time video processing.',
-  'https://github.com/Kirito14IT/prompt-spider-ui':
+  'https://github.com/yanx215241-a11y/dsh-sidebar-spider':
     'A deterministic, resolution-independent recreation of a reference terminal: numbered prompt statements, a wireframe spider, and a fan of strands that fork each word to code, model, or you.',
   'https://www.electronjs.org/docs/latest/api/web-contents':
     'webContents is an EventEmitter that renders and controls a web page. Use setWindowOpenHandler, capturePage() for snapshots and executeJavaScript to run code in the page context.',
@@ -71,7 +71,7 @@ const PAGE_EXCERPTS = {
   'https://github.com/deepseek-ai/deepseek-harness': 'Plugin surface, tool event transport and sidebar view registration.',
   'https://www.npmjs.com/package/@napi-rs/canvas': 'Skia canvas for Node: createCanvas, getContext, toBuffer, toDataURL.',
   'https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API': 'Canvas 2D drawing surface: state, paths, text, images and animation.',
-  'https://github.com/Kirito14IT/prompt-spider-ui': 'Reference dashboard: prompt statements, spider, forked strands and route cards.',
+  'https://github.com/yanx215241-a11y/dsh-sidebar-spider': 'Reference dashboard: prompt statements, spider, forked strands and route cards.',
   'https://www.electronjs.org/docs/latest/api/web-contents': 'Render and control a web page from the main process; capturePage() snapshots.',
   'https://raster.ink/blog/layered-canvas': 'Layered canvas: static chrome, animated strands, overlay text.',
   'https://stackoverflow.com/questions/15661339/how-do-i-fix-blurry-text-in-my-html5-canvas': 'Scale the canvas backing store by devicePixelRatio and CSS-size it down.',
@@ -85,7 +85,7 @@ const PAGES = [
   ['https://www.npmjs.com/package/@napi-rs/canvas', '@napi-rs/canvas - npm', 'code', 'completed'],
   ['https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API', 'Canvas API - MDN', 'code', 'completed'],
   ['https://developer.chrome.com/docs/extensions/reference/api/tabs', 'chrome.tabs - Chrome Developers', 'model', 'completed'],
-  ['https://github.com/Kirito14IT/prompt-spider-ui', 'prompt-spider-ui: every word, one fork', 'code', 'completed'],
+  ['https://github.com/yanx215241-a11y/dsh-sidebar-spider', 'canvas-engine: every word, one fork', 'code', 'completed'],
   ['https://nodejs.org/api/fs.html', 'File system | Node.js docs', 'code', 'completed'],
   ['https://www.electronjs.org/docs/latest/api/web-contents', 'webContents | Electron', 'model', 'completed'],
   ['https://web.dev/articles/device-pixel-ratio', 'Device pixel ratio - web.dev', 'code', 'completed'],
@@ -123,7 +123,7 @@ const CALL_SCRIPT = [
   [3900, 'web_search', QUERIES[3], 5100, { resultCount: 12 }],
   [4700, 'web_fetch', 'https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API', 5960, { httpStatus: 200, bytes: 62_800 }],
   [5400, 'web_search', QUERIES[4], 6520, { resultCount: 6 }],
-  [6300, 'web_fetch', 'https://github.com/Kirito14IT/prompt-spider-ui', 7180, { httpStatus: 200, bytes: 41_300 }],
+  [6300, 'web_fetch', 'https://github.com/yanx215241-a11y/dsh-sidebar-spider', 7180, { httpStatus: 200, bytes: 41_300 }],
   [7000, 'web_search', QUERIES[5], 8220, { resultCount: 10 }],
   [8800, 'web_search', QUERIES[6], 9960, { resultCount: 5 }],
   [9500, 'web_fetch', 'https://www.electronjs.org/docs/latest/api/web-contents', 10_430, { httpStatus: 200, bytes: 58_100 }],
@@ -152,7 +152,7 @@ export function createMockModel(now = NOW) {
     const failed = scHttpFailed(extra.httpStatus);
     const excerpt = isSearch
       ? ''
-      : (FETCH_EXCERPTS[target] || (failed ? `HTTP ${extra.httpStatus} — upstream did not return the document.` : ''));
+      : (FETCH_EXCERPTS[target] || (failed ? `HTTP ${extra.httpStatus} — engine did not return the document.` : ''));
     const resultTitles = isSearch ? (RESULT_TITLES[searchOrder++] || []).slice(0, 3) : [];
     return {
       id: 'call-' + pad2(index + 1),
