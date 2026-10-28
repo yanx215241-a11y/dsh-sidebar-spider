@@ -1321,28 +1321,66 @@ function createSpiderScene(container, options) {
         // Untouched token: plain monospace text, no border/fill (same advance).
         text(token, x + style.padX, baseline, tokenPlainColor(style), style.size);
       } else {
+        // BOLD contact box: thicker border at high route alpha, stronger tint,
+        // near-white text and a soft same-colour glow so the touched token is
+        // unmistakable at 1280×800 and 1148×962.
         const boxTop = Math.round(baseline - style.size * 0.85 - 1.5);
+        const boxH = style.size + 4;
+        ctx.save();
+        ctx.shadowColor = SC.layout.alpha(style.border, 0.55 * boxAlpha);
+        ctx.shadowBlur = 3.2 * boxAlpha;
         ctx.beginPath();
-        ctx.roundRect(x, boxTop, metro.width, style.size + 4, style.radius);
-        ctx.fillStyle = SC.layout.alpha(style.fill, style.fillAlpha * boxAlpha);
+        ctx.roundRect(x, boxTop, metro.width, boxH, style.radius);
+        ctx.fillStyle = SC.layout.alpha(style.fill, 0.28 * boxAlpha);
         ctx.fill();
-        ctx.strokeStyle = SC.layout.alpha(style.border, style.borderAlpha * (0.35 + 0.65 * boxAlpha));
-        ctx.lineWidth = 1;
+        ctx.shadowBlur = 0;
+        ctx.strokeStyle = SC.layout.alpha(style.border, 0.92 * boxAlpha);
+        ctx.lineWidth = 1.4;
         ctx.stroke();
-        text(token, x + style.padX, baseline, style.text, style.size);
+        ctx.restore();
+        text(token, x + style.padX, baseline, '#ffffff', style.size);
       }
       x += metro.advance;
     }
     return lines;
   }
 
+  /* ------------------------------------ crawling path inside the anchor band */
+  // The creature visibly crawls: stronger horizontal wander (±7.5% panel width,
+  // 3.4 s cycle) + gentle vertical wander (±2% height, 4.2 s cycle) inside the
+  // lower anchor band. Shared by the body AND the body-token contact so the
+  // boxed token always sits under the feet. Pure function of animationTime.
+  const CRAWL_X_AMP = 0.09;
+  const CRAWL_X_PERIOD = 2.5;
+  const CRAWL_Y_AMP = 0.03;
+  const CRAWL_Y_PERIOD = 2.2;
+  function crawlClock(now) {
+    return state.reducedMotion ? 3.1 : now;
+  }
+  function streamBodyX(inner, now) {
+    const t = crawlClock(now);
+    return inner.x + inner.w * (0.5 + CRAWL_X_AMP * Math.sin((t / CRAWL_X_PERIOD) * SC_TAU));
+  }
+  function streamBodyY(inner, anchorY, now) {
+    const t = crawlClock(now);
+    const wander = inner.h * CRAWL_Y_AMP * Math.sin((t / CRAWL_Y_PERIOD) * SC_TAU + 0.8);
+    const bob = state.reducedMotion ? 0 : Math.sin(t * 3.1) * 1.6;
+    return scClamp(anchorY + wander + bob, inner.y + inner.h * 0.52, inner.y + inner.h * 0.84);
+  }
+  function streamBodyVelocity(inner, now) {
+    const t = crawlClock(now);
+    return {
+      vx: inner.w * CRAWL_X_AMP * (SC_TAU / CRAWL_X_PERIOD) * Math.cos((t / CRAWL_X_PERIOD) * SC_TAU),
+      vy: inner.h * CRAWL_Y_AMP * (SC_TAU / CRAWL_Y_PERIOD) * Math.cos((t / CRAWL_Y_PERIOD) * SC_TAU + 0.8),
+    };
+  }
+
   /* ------------------------------------------------------- left: stream */
   /**
    * The left panel is the data the creature crawls over (engine's
    * `studio.prompt` statement stream), rendered as inline BOXED TOKENS like
-   * the reference: route-tinted rounded boxes (teal search / salmon fetch /
-   * pink failed), dimmer teal result-title boxes, muted excerpt boxes.
-   * The spider walks to the live (running) row, or the last row when done.
+   * the reference: route-tinted rounded boxes, only under the tentacle tips.
+   * The spider crawls along the lower anchor band while rows slide past.
    */
   function drawStreamPanel(L) {
     const m = state.model;
@@ -1450,23 +1488,25 @@ function createSpiderScene(container, options) {
       // (modulo offset) so rows leaving the top re-enter from the bottom.
       const scanNow = state.reducedMotion ? 4.2 : state.animTime;
       let sliceStart = blocks.length - 1;
-      let contentH = blocks[sliceStart].lines * lineH;
-      for (let i = blocks.length - 2; i >= 0 && contentH < inner.h + lineH * 6; i--) {
-        contentH += blocks[i].lines * lineH;
+      let baseH = blocks[sliceStart].lines * lineH;
+      for (let i = blocks.length - 2; i >= 0 && baseH < inner.h + lineH * 6; i--) {
+        baseH += blocks[i].lines * lineH;
         sliceStart = i;
       }
       const scrollSpeed = scClamp(inner.h * 0.032, 9, 18); // ~14 px/s at 1280x800
-      const strip = blocks.slice(sliceStart);
-      // A strip shorter than the viewport must NOT be duplicated (the seamless
-      // loop would otherwise show the same rows twice); bottom-align it instead.
-      const shortStrip = contentH < inner.h + lineH * 2;
-      const offset = shortStrip || state.reducedMotion ? 0 : (scanNow * scrollSpeed) % contentH;
-      const baseY = shortStrip
-        ? inner.y + Math.max(Math.round(lineH * 0.8), inner.h - contentH + Math.round(lineH * 0.8))
-        : inner.y + Math.round(lineH * 0.8);
+      // ALWAYS scroll: tile the newest slice until the loop distance covers the
+      // viewport + 2 rows, so short streams keep moving (repeating rows is fine).
+      const minLoop = inner.h + lineH * 2;
+      const baseStrip = blocks.slice(sliceStart);
+      const repeats = Math.max(1, Math.ceil(minLoop / Math.max(1, baseH)));
+      const strip = [];
+      for (let r = 0; r < repeats; r++) for (const block of baseStrip) strip.push(block);
+      const contentH = baseH * repeats;
+      const offset = state.reducedMotion ? 0 : (scanNow * scrollSpeed) % contentH;
+      const baseY = inner.y + Math.round(lineH * 0.8);
       const anchorY = inner.y + inner.h * 0.66;
       const instances = [];
-      for (let copy = 0; copy < (shortStrip ? 1 : 8); copy++) {
+      for (let copy = 0; copy < 10; copy++) {
         let y = baseY + copy * contentH - offset;
         if (y - contentH > inner.y + inner.h) break;
         for (let bi = 0; bi < strip.length; bi++) {
@@ -1493,7 +1533,7 @@ function createSpiderScene(container, options) {
       // Per-token contact: probe arms sweep rows in the tentacle band; each arm
       // boxes ONLY the token under its actual tip (no row-wide boxing). The body
       // row highlights only the token directly under the body.
-      const bodyX = inner.x + inner.w * (0.55 + (state.reducedMotion ? 0 : 0.035 * Math.sin(scanNow * 0.33)));
+      const bodyX = streamBodyX(inner, scanNow);
       const scanRightX = textRight - 24;
       const contactsFor = (rank) => {
         if (rank === 0) return [{ x: bodyX, alpha: state.reducedMotion ? 0.6 : 0.72 }];
@@ -1574,9 +1614,9 @@ function createSpiderScene(container, options) {
   function drawCrawler(L, inner, rows, lineH, anchorY) {
     const now = state.reducedMotion ? 4.2 : state.animTime;
     const scale = scClamp(L.left.w / 470, 0.62, 0.92);
-    const bodyX = inner.x + inner.w * (0.55 + (state.reducedMotion ? 0 : 0.035 * Math.sin(now * 0.33)));
-    const bob = state.reducedMotion ? 0 : Math.sin(now * 3.1) * 1.6;
-    const bodyY = anchorY + bob;
+    const bodyX = streamBodyX(inner, now);
+    const bodyY = streamBodyY(inner, anchorY, now);
+    const velocity = streamBodyVelocity(inner, now);
     state.crawl = { body: { x: bodyX, y: bodyY } };
     const tokenX = inner.x + 23;
     const textRight = inner.x + inner.w - 9;
@@ -1584,8 +1624,8 @@ function createSpiderScene(container, options) {
       SC.spider.drawSpider(ctx, {
         x: bodyX,
         y: bodyY,
-        vx: 0,
-        vy: 2,
+        vx: velocity.vx,
+        vy: velocity.vy,
         time: now,
         reducedMotion: state.reducedMotion,
         activeProbes: 0,
@@ -1659,8 +1699,8 @@ function createSpiderScene(container, options) {
     SC.spider.drawSpider(ctx, {
       x: bodyX,
       y: bodyY,
-      vx: 0,
-      vy: 2,
+      vx: velocity.vx,
+      vy: velocity.vy,
       time: now,
       reducedMotion: state.reducedMotion,
       activeProbes: activeArms,

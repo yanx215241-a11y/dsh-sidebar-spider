@@ -1,10 +1,10 @@
 # spider-scene — full-screen "检索大屏" Canvas-2D scene
 
-Self-contained, canvas-only full-screen dashboard
+Self-contained, canvas-only port of the canvas-engine full-screen dashboard
 (`app/renderer.js` composition + drawing vocabulary) re-driven by **DSH web-research
 data** (searches / results / fetched pages / failures) instead of prompt words.
 
-- Canvas engine modules: `vendor/canvas-engine` (hash-pinned by `build/build-scene.mjs`, MIT)
+- Engine: `vendor/canvas-engine` `@ f6522df29739ccc4861c1227601980b88265923d` (v1.2.0, MIT)
 - Reference composition: user screenshot `PROMPT SPIDER // EVERY WORD, ONE FORK` dashboard
 - Delivery model: **one classic-script IIFE file**, no imports, no assets, no injected
   CSS/DOM chrome — only a `<canvas>` element is created inside the host container.
@@ -12,30 +12,37 @@ data** (searches / results / fetched pages / failures) instead of prompt words.
 
 | File | Bytes | Notes |
 |---|---:|---|
-| `scene.js` | **115,943** | dist, generated (sha256 `9762980cfd4a93ab3fa6ba22673b2f27c4f1b28b0808cfe390e5ccb39c5036de`) |
-| `src/scene-dashboard.js` | 91,041 | composition source incl. scrolling stream + per-token probe contact + infinite label loop (edit this, then rebuild) |
+| `scene.js` | **118,011** | dist, generated (sha256 `0e96306568c3a040ac826700dcb0a10221062495146d9ec1807af51ba08a14f6`) |
+| `src/scene-dashboard.js` | 93,109 | composition source incl. always-scrolling stream + crawling spider + per-token contact + infinite labels (edit this, then rebuild) |
 | `build/build-scene.mjs` | 9,278 | embeds pinned engine modules verbatim + composition |
 | `demo/mock-data.mjs` | 15,182 | deterministic realistic session generator (queries, result titles, excerpts) |
 | `demo/mock-scene.json` | 27,906 | **exact mock model JSON** rendered in the demo PNGs |
-| `demo/render-scene.mjs` | 6,932 | headless PNG renderer (stubbed DOM + @napi-rs/canvas) |
+| `demo/render-scene.mjs` | 11,109 | headless PNG renderer + short-content mock helper (stubbed DOM + @napi-rs/canvas) |
 | `demo/verify-scene.mjs` | 9,080 | 11 API/lifecycle acceptance checks |
-| `demo/scene-1280x800.png` | 563,632 | landscape 16:10 render (default frame t=10.0s) |
-| `demo/scene-1280x800-t0.png` | 566,149 | early frame t=0.3s (labels on paths, counters 0) |
-| `demo/scene-1280x800-t1.png` | 565,771 | early frame t=2.5s (counters starting to accumulate) |
-| `demo/scene-1280x800-t2.png` | 568,327 | mid frame t=8.6s |
-| `demo/scene-1280x800-flow-a.png` | 564,708 | loop movement proof t=2.40s |
-| `demo/scene-1280x800-flow-b.png` | 565,867 | loop movement proof t=2.80s (labels moved) |
-| `demo/scene-1280x800-flow-c.png` | 568,016 | loop movement proof t=3.20s (labels moved again) |
-| `demo/scene-1280x800-loop-a.png` | 570,993 | accumulation proof t=6.0s |
-| `demo/scene-1280x800-loop-b.png` | 573,365 | accumulation proof t=14.0s |
-| `demo/scene-1280x800-loop-c.png` | 569,448 | accumulation proof t=26.0s |
-| `demo/scene-1280x800-scroll-a.png` | 570,993 | upward-scroll proof t=6.0s |
-| `demo/scene-1280x800-scroll-b.png` | 568,281 | upward-scroll proof t=6.3s (rows ~4px higher) |
-| `demo/scene-1280x800-scroll-c.png` | 569,819 | upward-scroll proof t=6.6s (rows higher again) |
-| `demo/scene-1280x800-touch-a.png` | 567,603 | per-token contact proof t=6.1s (only probe-tip tokens boxed) |
-| `demo/scene-1280x800-touch-b.png` | 570,236 | per-token contact proof t=6.5s (boxed token moved) |
-| `demo/scene-900x1000.png` | 490,037 | portrait 9:10 render |
-| `demo/scene-1148x962.png` | 634,875 | live DSH host-size render (bonus reference) |
+| `demo/scene-1280x800.png` | 564,346 | landscape 16:10 render (default frame t=10.0s) |
+| `demo/scene-1280x800-t0.png` | 567,011 | early frame t=0.3s (labels on paths, counters 0) |
+| `demo/scene-1280x800-t1.png` | 566,889 | early frame t=2.5s (counters starting to accumulate) |
+| `demo/scene-1280x800-t2.png` | 568,332 | mid frame t=8.6s |
+| `demo/scene-1280x800-flow-a.png` | 566,081 | loop movement proof t=2.40s |
+| `demo/scene-1280x800-flow-b.png` | 566,553 | loop movement proof t=2.80s (labels moved) |
+| `demo/scene-1280x800-flow-c.png` | 568,288 | loop movement proof t=3.20s (labels moved again) |
+| `demo/scene-1280x800-loop-a.png` | 572,196 | accumulation proof t=6.0s |
+| `demo/scene-1280x800-loop-b.png` | 574,340 | accumulation proof t=14.0s |
+| `demo/scene-1280x800-loop-c.png` | 569,621 | accumulation proof t=26.0s |
+| `demo/scene-1280x800-scroll-a.png` | 572,196 | upward-scroll proof t=6.0s |
+| `demo/scene-1280x800-scroll-b.png` | 569,318 | upward-scroll proof t=6.3s |
+| `demo/scene-1280x800-scroll-c.png` | 572,205 | upward-scroll proof t=6.6s |
+| `demo/scene-1280x800-touch-a.png` | 569,056 | per-token contact proof t=6.1s (bold probe-tip box) |
+| `demo/scene-1280x800-touch-b.png` | 572,137 | per-token contact proof t=6.5s (boxed token moved) |
+| `demo/scene-touch-crop.png` | 136,286 | 2× close-up of the bold tentacle-contact box |
+| `demo/scene-1280x800-crawl-a.png` | 572,000 | spider-crawl proof t=5.8s |
+| `demo/scene-1280x800-crawl-b.png` | 570,336 | spider-crawl proof t=6.2s (body moved, legs re-posed) |
+| `demo/scene-short-t0.png` | 437,891 | short-content (3 calls) scroll proof t=5.0s |
+| `demo/scene-short-t1.png` | 435,788 | short-content scroll proof t=5.4s (rows higher) |
+| `demo/scene-short-t2.png` | 436,356 | short-content scroll proof t=5.8s (rows higher again) |
+| `demo/scene-900x1000.png` | 490,238 | portrait 9:10 render |
+| `demo/scene-1148x962.png` | 634,396 | live DSH host-size render (bonus reference) |
+| `demo/scene-1280x800@2x.png` | 1,680,214 | DPR-cap-2 sanity render (2560×1600) |
 | `demo/scene-1280x800@2x.png` | 1,679,534 | DPR-cap-2 sanity render (2560×1600) |
 
 Byte counts are the final generated artifacts; `scene.js` is rebuilt from `src/` (see below).
@@ -222,23 +229,26 @@ you `#f4cf4d`, pink `#f23c83`; mono font everywhere, 1px hairline frames, `▪ T
 The creature lives **on the flowing data**, like engine's spider crawling over the
 `studio.prompt` statement list — not in the central web:
 
-- **Slow upward auto-scroll**: the left stream slides upward continuously at
+- **Slow upward auto-scroll (always)**: the left stream slides upward continuously at
   `scrollSpeed = clamp(innerH * 0.032, 9, 18)` px/s (≈14 px/s at 1280×800) with
-  `offset = (animationTime * scrollSpeed) % contentHeight`; the newest contiguous slice whose
-  height covers the viewport is drawn **twice** (modulo offset), so rows leaving the top
-  re-enter seamlessly from the bottom and there is never a gap. Row order/content/styling is
-  unchanged — only the offset moves. Pure function of `animationTime` (+ model slice), so
-  snapshot frames at different times show different offsets.
-- **Stable anchor zone**: the spider body sits at `inner.y + inner.h * 0.66` (lower part of the
-  panel) with a small horizontal wander + bob; the **anchor row** is the row currently passing
-  that zone (preferring the live row when it is passing there). Only the token directly under
-  the body is boxed (plus a near-invisible 1 px frame, alpha 0.12) — no whole-row boxes. The
-  5 rows above it form the tentacle band: each arm boxes only the token under its actual tip
-  (see “Per-token probe contact” below). Rows below the body are not yet reached → plain text.
+  `offset = (animationTime * scrollSpeed) % contentHeight`. The newest contiguous slice is
+  tiled/repeated until its loop distance is at least `innerH + 2*lineH`, then drawn twice
+  (modulo offset), so rows leaving the top re-enter from the bottom seamlessly — **even when
+  the session has only 2–3 calls** (rows repeat when very short; motion is always on, purity
+  from `animationTime` is kept). Row order/content/styling is unchanged.
+- **Crawling spider in the anchor band**: the body visibly crawls inside the lower band at
+  `bodyX = cx + w*(0.5 + 0.09*sin(t*2π/2.5))` (±9 % panel width, 2.5 s cycle) and
+  `bodyY = anchorY + innerH*0.03*sin(t*2π/2.2 + 0.8) + 1.6px bob`, clamped to the band; the
+  real velocity feeds `drawSpider` so the legs cycle/gait and the heading changes. The
+  **anchor row** is the row passing the body (live row preferred); only the token directly
+  under the body is boxed (near-invisible 1 px frame, alpha 0.12) — no whole-row boxes. The 5
+  rows above form the tentacle band (see “Per-token probe contact”). Rows below are plain.
 - `probePose` arms reach the rows in the tentacle band at their **current visual positions**
   (targets converted into the scaled body space; arms/carets drawn locally because engine
   `drawProbes` hardcodes a 1080-stage clamp). Everything is a pure function of
   `animationTime` + row position → headless snapshots are reproducible.
+  `demo/scene-1280x800-crawl-a.png` (5.8 s) vs `-crawl-b.png` (6.2 s) show the body at
+  different x/y with different leg poses.
 - The spider is scaled by panel width (`0.62…0.92`) so it reads the same at 900×1000, 1148×962
   and 1280×800. Faint connector strands (`drawConnectors`) run from the body into the central
   web's strand starts; two slow pulses travel along them while live.
@@ -249,10 +259,11 @@ The creature lives **on the flowing data**, like engine's spider crawling over t
 
 Boxes are **not** always on, and they are **not row-wide**: the left stream defaults to plain
 monospace text, and only the token under an actual tentacle tip gains its rounded box — matching
-the user's “有的触角没有粘到的单词都进行了框选” complaint. Token **styling** once touched is the
-reference word-box look (1px route border ~55 % alpha, route tint ~12 % alpha, radius 2.5,
-3px pad/gap, integer-snapped); every untouched token on the same row stays plain text in the same
-colours, with chips / status tag / `│` gutter / failure styling always present.
+the user's “有的触角没有粘到的单词都进行了框选” complaint. The reached token is drawn **bold**:
+1.4 px route border at ~0.92 alpha, route fill at ~0.28 alpha, near-white text, radius 2.5,
+3px pad/gap, integer-snapped, plus a 3 px same-colour glow — clearly visible at 1280×800 and
+1148×962; every untouched token on the same row stays plain text in the same colours, with
+chips / status tag / `│` gutter / failure styling always present.
 
 - **Contact rule**: for each of the 5 rows above the body, the probe arm's actual tip is at
   `tipX = tokenX + scanExtension(rank, now) * (scanRight - tokenX)` on that row's first line
@@ -268,7 +279,8 @@ colours, with chips / status tag / `│` gutter / failure styling always present
   up only where the tips pass, then fade back to plain; different arms sweep different rows/x
   ranges so only a handful of tokens are boxed at any moment
   (`demo/scene-1280x800-touch-a.png` @6.1 s vs `-touch-b.png` @6.5 s: the boxed token moves
-  along the row while most tokens stay plain).
+  along the row while most tokens stay plain; `demo/scene-touch-crop.png` is a 2× close-up of
+  the bold contact box).
 - **Static-snapshot safe**: box visibility is a pure function of `animationTime` + row/token
   geometry (no animation history), so a single headless `snapshot()` is deterministic.
 - **Row tokenisation** (content/layout): search queries split on whitespace + punctuation
@@ -341,7 +353,7 @@ safety re-measure for fullscreen toggles the RO can miss). No fixed 1080×1350 s
   + `push({kind:'search', ...})`; `web_fetch` → same with `url`, `httpStatus`, `bytes`;
   discovered links → `push({type:'page', page:{url, title, route, status}})`.
 
-## Canvas engine modules (embedded by the build)
+## Engine reuse (verbatim modules embedded by the build)
 
 | namespace | engine file | exported / used |
 |---|---|---|
@@ -350,14 +362,14 @@ safety re-measure for fullscreen toggles the RO can miss). No fixed 1080×1350 s
 | `SC.layout` | `app/live-layout.js` | `livePose` (closed orbit pose), `alpha` (rgba helper) |
 | `SC.motion` | `app/motion.js` | `cubicPoint` (extracted; flight-particle curves) |
 
-Build verifies each engine module's SHA-256 and fails on drift. MIT licensed
-(`Copyright (c) 2026 yanx215241-a11y`), stated in the `scene.js` banner. `app/renderer.js` itself is
+Build verifies the pinned engine SHA-256 per file and fails on drift. License: engine MIT
+(`Copyright (c) 2026 yanx215241-a11y`), kept in the `scene.js` banner. `app/renderer.js` itself is
 **not** shipped — its drawing recipes were adapted into the new composition.
 
 ## Verification evidence
 
 ```
-$ node demo/render-scene.mjs          # writes default/t0/t1/t2 + -flow-a/b/c + -loop-a/b/c + -scroll-a/b/c + -touch-a/b frames, 900x1000, 1148x962 (+mock-scene.json)
+$ node demo/render-scene.mjs          # writes default/t0/t1/t2 + -flow-a/b/c + -loop-a/b/c + -scroll-a/b/c + -touch-a/b + -crawl-a/b + scene-short-t0/t1/t2 + scene-touch-crop frames, 900x1000, 1148x962 (+mock-scene.json)
 $ node demo/verify-scene.mjs          # 11/11 checks pass
   ok loads via require() and exposes createSpiderScene + meta
   ok contract: el/canvas/setData/push/resize/destroy/snapshot/getState exposed
@@ -379,7 +391,7 @@ titles; fetch rows: a 1–3 line excerpt; failures: an error excerpt). Rendered 
 Exact JSON: [`demo/mock-scene.json`](demo/mock-scene.json) (deterministic — regenerate with
 `createMockModel(now)` from `demo/mock-data.mjs`; the scene also derives metrics from it).
 
-## Known gaps
+## Known gaps / deviations from engine
 
 1. **Responsive, not a 1:1 pixel port**: engine is a fixed 1080×1350 stage; this scene recomputes
    panels for arbitrary aspect ratios. Recipes/colors/typography match, coordinates do not.
